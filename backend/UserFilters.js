@@ -13,7 +13,7 @@ const F = require('core/FunctionCodes');
 function UserFilters(options) {
 
   if (!options.ds) {
-    throw new Error('not specified ds (DataSource)');
+    throw new Error('No ds (DataSource) specified');
   }
 
   /**

@@ -148,8 +148,8 @@
               field = $regForm.find('[name='+fieldName+']');
               if (!field.val()) {
                 valid = false;
-                messages.push('field ' + (fields[fieldName].caption ? fields[fieldName].caption : fieldName )
-                  + ' Required');
+                messages.push('Field' + (fields[fieldName].caption ? fields[fieldName].caption : fieldName )
+                  + ' required');
               }
             }
           }

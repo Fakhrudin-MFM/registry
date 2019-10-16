@@ -186,7 +186,7 @@ if ($.fn.dataTable) {
       "lengthMenu": "Show by _MENU_",
       "info": "Records from _START_ to _END_ from _TOTAL_ records",
       "infoEmpty": "Records from 0 to 0 from 0 records",
-      "infoFiltered": "(total _MAX_)",
+      "infoFiltered": "\(total _MAX_\)",
       "infoPostFix": "",
       "loadingRecords": "Loading records ...",
       "zeroRecords": "No records available.",
@@ -455,7 +455,7 @@ function initSelect(element, sub_nav, caption) {
       url = this.getDataUrl(data, url);
       $frame.addClass('active').detach().attr('src', url);
       $(document.body).append($frame);
-      return $frame.off('load').load(function () {
+      return $frame.off('load').on('load', function () {
         $overlay.hide();
         $frame.removeClass('transparent');
         $frame.parent().addClass('hidden-overflow');
@@ -492,7 +492,7 @@ function initSelect(element, sub_nav, caption) {
       $(document.body).append($frame);
       $(document.body).append(form);
       form.submit();
-      return $frame.off('load').load(function () {
+      return $frame.off('load').on('load', function () {
         form.remove();
         $overlay.hide();
         $frame.removeClass('transparent');
@@ -524,13 +524,14 @@ function initSelect(element, sub_nav, caption) {
         return false;
       }
       try {
+        if (!imodalWindow) {
+          imodalWindow = $frame.get(0).contentWindow;
+        }
         imodalWindow.focus();
-        imodalWindow.history.back();
       } catch (err) {
         console.error(err);
-        this.forceClose();
       }
-      //window.focus();
+      this.forceClose();
       return true;
     },
 
@@ -601,12 +602,12 @@ if (window.Inputmask) {
     email: {
       definitions: {
         "*": {
-          validator: "[a-zA-Z0-9A-Za-z!#$%&'*+/=?^_`{|}~-]",
+          validator: "[а-яА-Я0-9A-Za-z!#$%&'*+/=?^_`{|}~-]",
           cardinality: 1,
           casing: "lower"
         },
         "-": {
-          validator: "[a-zA-Z0-9A-Za-z-]",
+          validator: "[а-яА-Я0-9A-Za-z-]",
           cardinality: 1,
           casing: "lower"
         }

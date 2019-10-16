@@ -163,7 +163,7 @@
       this.newCoords = coords;
       this.modalMap.balloon.isOpen() && this.modalMap.balloon.close();
       this.modalMap.balloon.open(coords, {
-        contentHeader: 'Coordinates&nbsp&nbsp',
+        contentHeader: 'Coordinates&nbsp;&nbsp;',
         contentBody: '<div class="mt10">' + coords[0].toPrecision(8) + '</div>'
         + '<div class="mb10">' + coords[1].toPrecision(8) + '</div>'
         + '<button class="set-coords-btn btn btn-primary btn-sm" type="button">Set</button>'

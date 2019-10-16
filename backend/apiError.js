@@ -28,7 +28,7 @@ module.exports = function (scope, err, res, userMsg) {
     msg: err instanceof Error ? err.message : err
   };
   if (typeof userMsg === 'boolean' && userMsg && !err.code) {
-    errData.msg = 'Внутренняя ошибка сервера.';
+    errData.msg = 'Internal server error.';
   } else if (err instanceof IonError) {
     errData.code = err.code;
     errData.params = err.params;

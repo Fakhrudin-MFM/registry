@@ -26,7 +26,7 @@ module.exports = function (req, res) {
         scope.securedDataRepo.getItem(req.params.class, req.params.id, opts)
           .then((item) => {
             if (!item) {
-              return res.status(404).send('Не найден запрашиваемый объект данных.');
+              return res.status(404).send('No requested data object found.');
             }
             const objectId = item.getMetaClass().getName() + '@' + item.getItemId();
             return scope.signManager.getSignatures(objectId, null, null, {asBase64: false})

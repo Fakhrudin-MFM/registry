@@ -1,21 +1,21 @@
-// в теле html-страницы должно быть:
+// in the body of the html page should be
 // <object id="cadesplugin" type="application/x-cades" class="hiddenObject"></object>
 // {
 //   var cp = new CryptoPro(..., ..., onSignFinished);
-//   // получение - GET с параметром id
-//   // идентификатор объекта и подпись будет передана в processUrl в POST-параметрах "id" и "sign"
-//   var certs = cp.getCerts(); // возвращает ключ сертификата => текстовое представление
-//   ... // [показываем, ] выбираем сертификат
+//   // getting - GET with id parameter
+//   // object identifier and signature will be transferred to processUrl in POST-parameters "id" and "sign"
+//   var certs = cp.getCerts(); // returns certificate key => text view
+//   ... // [show, ] select the certificate
 //   cp.makeSign(objId, certKey);
 // }
 // function onSignFinished(/*string*/ objId, /*string*/ errorMessage) {
-//   // errorMessage == null, если ошибок не было
+//   // errorMessage == null, if there were no errors
 // }
-// возвращаемые статусы:
-// not ready - не готов (в процессе подписывания другого объекта)
-// receiving - получение объекта
-// signing   - подписывание
-// sending   - отправка
+// return statuses:
+// not ready - not ready (in the process of signing another object)
+// receiving - receiving an object
+// signing   - signing
+// sending   - sending
 // success
 // fail
 
@@ -37,8 +37,8 @@ function onCadesLoaded(cb) {
         if (event.data === "cadesplugin_loaded") {
           cb();
         } else if(event.data === "cadesplugin_load_error") {
-          console.error("Плагин CryptoPro не загружен.");
-          cb("Плагин CryptoPro не загружен.");
+          console.error("Plugin CryptoPro not loaded");
+          cb("Plugin CryptoPro not loaded");
         }
       },
       false);
@@ -53,9 +53,9 @@ function CryptoPro() {
 	this.CAPICOM_CERTIFICATE_FIND_SHA1_HASH = 0;
 	this.CADES_BES = 1;
 	// CADESCOM_XML_SIGNATURE_TYPE
-	this.CADESCOM_XML_SIGNATURE_TYPE_ENVELOPED = 0; // Вложенная подпись
-	this.CADESCOM_XML_SIGNATURE_TYPE_ENVELOPING = 1; // Оборачивающая подпись
-	this.CADESCOM_XML_SIGNATURE_TYPE_TEMPLATE = 2; // Подпись по шаблону
+	this.CADESCOM_XML_SIGNATURE_TYPE_ENVELOPED = 0; // Emplaced signature
+	this.CADESCOM_XML_SIGNATURE_TYPE_ENVELOPING = 1; //  Wrapping signature
+	this.CADESCOM_XML_SIGNATURE_TYPE_TEMPLATE = 2; // Signature by pattern
 
 	this.CAPICOM_CERTIFICATE_INCLUDE_WHOLE_CHAIN = 1;
 
@@ -136,7 +136,7 @@ CryptoPro.prototype.open = function (cb) {
       cb();
     });
   } else {
-    cb(new Error('Не удалось открыть хранилище сертификатов!'));
+    cb(new Error('Could not open certificate store!'));
   }
 };
 
@@ -154,7 +154,7 @@ CryptoPro.prototype.close = function (cb) {
       cb();
     });
   } else {
-    cb(new Error('Не удалось закрыть хранилище сертификатов!'));
+    cb(new Error('Failed to close the certificate store!'));
   }
 };
 
@@ -230,7 +230,7 @@ CryptoPro.prototype.getSignFunc = function(contentType, onFail, data){
 		signFunc = this.makeCadesBesSign;
 		data.attributes["actualSignatureType"] = this.OBJ_CADES_SIGNED_DATA;
 	} else {
-		onFail.call(this,"Для подписи получены данные неподдерживаемого типа: '" + contentType + "'");
+		onFail.call(this,"Unrecognized type received to be signed: '" + contentType + "'");
 	}
 	return signFunc;
 }
@@ -241,7 +241,7 @@ CryptoPro.prototype.abort = function () {
 
 CryptoPro.prototype.makeSign = function(params, onFail, onSuccess, onNeedCertSelect) {
   if (typeof cadesplugin === 'undefined') {
-    return onFail(new Error('Не подключен плагин ЭП'));
+    return onFail(new Error('Plugin ES not connected'));
   }
 
 	var me = this;
@@ -264,7 +264,7 @@ CryptoPro.prototype.makeSign = function(params, onFail, onSuccess, onNeedCertSel
 		    type: "POST",
 		    url: params.dataUrl,
 		    data: {action: params.action},
-		    //dataType: "text", // преобразование в XML не нужно, cryptopro принимает XML как текст
+		    //dataType: "text", // no conversion to XML, cryptopro accepts XML as text
 		    beforeSend: function(xhr) {
 			    xhr.setRequestHeader('x-requested-with', 'XMLHttpRequest');
 		    }
@@ -280,7 +280,7 @@ CryptoPro.prototype.makeSign = function(params, onFail, onSuccess, onNeedCertSel
                 me.getCertificate(certKey, function (cert, err) {
                   if (err || !cert) {
                     me.state = "ready";
-                    return onFail.call(me, err || "Не найден указанный сертификат!");
+                    return onFail.call(me, err || "Specified certificate was not found!");
                   }
 
                   var signFunc = null;
@@ -312,12 +312,12 @@ CryptoPro.prototype.makeSign = function(params, onFail, onSuccess, onNeedCertSel
                   return;
                 }
                 me.state = "ready";
-                onFail.call(me, "Отсутсвуют сертификаты для подписи!");
+                onFail.call(me, "There are no certificates to sign!");
               });
 						}
 					} else {
             me.state = "ready";
-            onFail.call(me, "Не получены данные для подписи!");
+            onFail.call(me, "No signature data received!");
           }
 				} else {
 					me.state = "ready";
@@ -325,7 +325,7 @@ CryptoPro.prototype.makeSign = function(params, onFail, onSuccess, onNeedCertSel
 				}
 			});
 	} else {
-		onFail.call(me,"Невозможно выполнить подпись данных. Модуль ЭП занят другой задачей.");
+		onFail.call(me,"Unable to sign data. The module ES is busy with another task.");
 	}
 };
 
@@ -356,14 +356,14 @@ CryptoPro.prototype.sendSign = function(params, data, signatures, onFail, onSucc
 		var success = (textStatus === "success");
 		me.state = "ready";
 		if (!success) {
-			onFail.call(me, "Отправка ЭП не удалась, код ошибки: '" + textStatus + "'");
+			onFail.call(me, "Sending an ES failed, error code:" + textStatus + "'");
 		} else {
 	    	var dt = typeof data;
 	    	if (dt !== "object") {
-	    		onFail.call(me, "Отправка ЭП не удалась: получен неверный тип ответа '" + dt + "'");
+	    		onFail.call(me, "Sending an ES failed: wrong reply type received" + dt + "'");
 	    	} else {
 	    		if (data.message && data.type === "ERROR") {
-	    			onFail.call(me, "Отправка ЭП не удалась: сервер вернул '" + data.message + "'");
+	    			onFail.call(me, "Sending an ES failed: returned by server" + data.message + "'");
 	    		} else if ("function" === typeof onSuccess){
 	    			onSuccess.call(me);
 	    		}
@@ -383,7 +383,7 @@ CryptoPro.prototype.getCertificate = function(thumbprint, cb) {
     try {
       var oCerts = this.store.Certificates.Find(this.CAPICOM_CERTIFICATE_FIND_SHA1_HASH, thumbprint);
       if (oCerts.Count == 0) {
-        return cb(null, new Error('Сертификат не найден!'));
+        return cb(null, new Error('Certificate not found!'));
       }
       var result = oCerts.Item(1);
       cb(result);
@@ -399,7 +399,7 @@ CryptoPro.prototype.getCertificate = function(thumbprint, cb) {
         var oCerts = yield certsObj.Find(me.CAPICOM_CERTIFICATE_FIND_SHA1_HASH, thumbprint);
         var Count = yield oCerts.Count;
         if (Count == 0) {
-          return arg[0](null, new Error('Сертификат не найден!'));
+          return arg[0](null, new Error('Certificate not found!'));
         }
         var result = yield oCerts.Item(1);
         cb(result);
@@ -408,7 +408,7 @@ CryptoPro.prototype.getCertificate = function(thumbprint, cb) {
       }
     });
   } else {
-   cb(null, new Error('Не удалось получить объект сертификата!'));
+   cb(null, new Error('Failed to get the certificate object!'));
   }
 };
 
@@ -449,19 +449,19 @@ CryptoPro.prototype.makeCadesBesSign = function(dataToSign, certObject, cb) {
       }
     });
   } else {
-    cb(null, new Error('Не удалось выполнить подпись!'));
+    cb(null, new Error('Signature failed!'));
   }
 };
 
 /**
  *
  * @param {{content: String}} dataToSign
- *            Документ XML, который следует подписать. Документ должен
- *            быть в кодировке UTF-8. Если кодировка документа отличается от
- *            UTF-8, то его следует закодировать в BASE64
+ \* XML document to be signed. Document must
+ \* be encoded UTF\-8\. If the document encoding is different from
+ \* UTF-8, it should be encoded in BASE64
  * @param certObject
- *            Сертификат
- * @returns (String) Подписанный XML
+ \* Certificate
+ \* @returns \(String\) Signed XML
  */
 CryptoPro.prototype.makeXMLSign = function(dataToSign, certObject, cb) {
   if (typeof cadesplugin.CreateObject === 'function') {
@@ -499,7 +499,7 @@ CryptoPro.prototype.makeXMLSign = function(dataToSign, certObject, cb) {
       }
     });
   } else {
-    cb(null, new Error('Не удалось выполнить подпись!'));
+    cb(null, new Error('Signature failed!'));
   }
 };
 
@@ -554,7 +554,7 @@ CryptoPro.prototype.getCertFromSign = function(sign, cb) {
       }
     });
   } else {
-    cb(null, new Error('Не удалось получить сертификат!'));
+    cb(null, new Error('Failed to get a certificate!'));
   }
 };
 

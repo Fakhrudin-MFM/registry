@@ -162,7 +162,7 @@ module.exports = function (req, res) {
         filePromises
           .then(() => {
             if (filesCount && filesCount === errorsCount) {
-              return onError(scope, new Error('Failed to accept fileы'), res);
+              return onError(scope, new Error('Failed to accept files'), res);
             }
             if (cm && req.params.class && req.params.id) {
               let updates = {};
@@ -202,10 +202,10 @@ module.exports = function (req, res) {
             }
             res.send(result);
           })
-          .catch(err => onError(scope, err, res, 'Failed to accept fileы.'));
+          .catch(err => onError(scope, err, res, 'Failed to accept files.'));
       });
 
-      bus.on('error', err => onError(scope, err, res, 'Failed to accept fileы.'));
+      bus.on('error', err => onError(scope, err, res, 'Failed to accept files.'));
       req.pipe(bus);
     },
     res

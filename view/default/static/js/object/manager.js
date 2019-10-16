@@ -64,7 +64,7 @@
 
   function getBareFormAlert () {
     return '<div class="bare-form-alert alert alert-info">'
-      + 'Object was opened directly, no source list of objects. '
+      + 'Object was opened directly, no source list of objects.'
       + 'Go to <a href="/"><b>default page</b></a>.</div>';
   }
 
@@ -97,6 +97,7 @@
     this.selProviders = {};
     this.changed = false;
     this.trackedValues = {};
+    this.deps = [];
     this.init();
 
     this.historyPage = new historyPage(
@@ -435,7 +436,7 @@
             }
             p.resolve();
           }).fail(function (xhr, textStatus, errorThrown) {
-            //messageCallout.error('<b>Error</b><p>'+ xhr.responseText +'</p>');
+            //messageCallout.error('<b>Error:</b><p>'+ xhr.responseText +'</p>');
             console.error(xhr);
             self.$loader.hide();
             p.resolve();
@@ -688,7 +689,7 @@
                 },
                 function () {
                   $crypto.close(function (err) {
-                    messageCallout.success('Action signed');
+                    messageCallout.success('Action signed!');
                     if (typeof cb === 'function') {
                       cb(finalizer);
                     } else {
@@ -731,7 +732,7 @@
           msg = xhr.responseJSON.msg;
         }
       }
-      messageCallout.error('<b>Error</b><p>'+ msg +'</p>');
+      messageCallout.error('<b>Error:</b><p>'+ msg +'</p>');
       console.error(xhr);
       if (xhr.responseJSON && xhr.responseJSON.code &&
         (xhr.responseJSON.code === "web.iem" || xhr.responseJSON.code === "web.exists") &&
@@ -1003,6 +1004,7 @@
       this.$form.find('.form-group').each(function () {
         var $group = $(this);
         switch ($group.data('type')) {
+          case 'number': self.initNumber($group); break;
           case 'date': self.initDateField($group); break;
           case 'datetime': self.initDateTimeField($group); break;
           case 'image':
@@ -1068,6 +1070,13 @@
       }
     },
 
+    initNumber: function ($group) {
+      $group.find('.attr-value').on('input', function (e) {
+        var validValue = Math.max(e.target.min || (-1 * Infinity), Math.min(e.target.max || Infinity, e.target.value));
+        $(this).val(validValue);
+      });
+    },
+
     initDateField: function ($group) {
       var ctrl = $group.find('.form-datepicker');
       var fm = $group.data('prop');
@@ -1089,6 +1098,7 @@
         if (moment().isAfter(opts.maxDate)) {
           ds = opts.maxDate;
         }
+        opts.maxDate.add({h: 23, m: 59, s: 59, ms: 999});
       }
       this.formatDateCtrl(ctrl, this.options.locale.dateFormat);
       ctrl.closest('.input-group').show();
@@ -1116,16 +1126,17 @@
         useCurrent: false
       };
       if (ctrl.data('min')) {
-        opts.minDate = prepareLimit(ctrl.data('min'), ctrl.data('center'), this.options.locale.dateTimeFormat);
+        opts.minDate = prepareLimit(ctrl, ctrl.data('min'), ctrl.data('center'), this.options.locale.dateTimeFormat);
         if (moment().isBefore(opts.minDate)) {
           ds = opts.minDate;
         }
       }
       if (ctrl.data('max')) {
-        opts.maxDate = prepareLimit(ctrl.data('max'), ctrl.data('center'), this.options.locale.dateTimeFormat);
+        opts.maxDate = prepareLimit(ctrl, ctrl.data('max'), ctrl.data('center'), this.options.locale.dateTimeFormat);
         if (moment().isAfter(opts.maxDate)) {
           ds = opts.maxDate;
         }
+        opts.maxDate.add({s: 59, ms: 999});
       }
       this.formatDateCtrl(ctrl, this.options.locale.dateTimeFormat);
       ctrl.closest('.input-group').show();
@@ -1421,6 +1432,7 @@
           } else {
             $group.find('.attr-value').val(result._id);
             $group.find('.display-value').text(result.__string).val(result.__string);
+            $group.find('.modal-link.display-value').attr('href', opts.updateUrl + '/' + result._id);
             $group.find('.attr-value').trigger('change');
           }
         }
@@ -1453,6 +1465,7 @@
               } else {
                 $group.find('.attr-value').val(result[0]._id);
                 $group.find('.display-value').val(result[0].__string).text(result[0].__string);
+                $group.find('.modal-link.display-value').attr('href', opts.updateUrl + '/' + result[0]._id);
                 $group.find('.attr-value').trigger('change');
               }
             }
@@ -1513,6 +1526,7 @@
           list.requestParams = $.param(requestParams);
           $group.find('.table').on('change', function (e) {
             me.trackedValues[$group.data('attr')] = e.changes;
+            me.refreshDependency();
           });
           return p.promise();
         });
@@ -1525,6 +1539,7 @@
         list.requestParams = $.param(requestParams);
         $group.find('.table').on('change', function (e) {
           me.trackedValues[$group.data('attr')] = e.changes;
+          me.refreshDependency();
         });
       }
     },
@@ -1697,7 +1712,7 @@
         });
       };
 
-      //We sort for fidelity an array of selectors according to the order in DOM
+      //We sort for fidelity an array of selectors according to the order in
       selects = selects.sort(function (a, b) {
         return selects.index(a) - selects.index(b);
       });
@@ -1822,13 +1837,15 @@
       var self = this;
       var calendar = new Calendar($group);
       calendar.init();
+      $group.on('change', function (e) {
+        self.trackChange(calendar.$field, calendar.getValue());
+      });
     },
 
     // DEPENDENCY
 
     initDependency: function () {
       var self = this;
-      this.deps = [];
       this.$form.find('.form-group').each(function () {
         var $group = $(this);
         var prop = $group.data('prop');
@@ -1990,13 +2007,15 @@
         var $struct = $(element);
         $struct.toggleClass('hidden', this.isHiddenAll($struct.find('.form-group')));
       }.bind(this));
-      this.$tabList.find('.hidden').removeClass('hidden');
-      $('.tab-pane').each(function (index, element) {
-        var $pane = $(element);
-        if (this.isHiddenAll($pane.find('.form-group'))) {
-          this.$tabList.find('[href="#'+ element.id +'"]').parent().addClass('hidden');
-        }
-      }.bind(this));
+      if (this.$tabList) {
+        this.$tabList.find('.hidden').removeClass('hidden');
+        $('.tab-pane').each(function (index, element) {
+          var $pane = $(element);
+          if (this.isHiddenAll($pane.find('.form-group'))) {
+            this.$tabList.find('[href="#' + element.id + '"]').parent().addClass('hidden');
+          }
+        }.bind(this));
+      }
     },
 
     isHiddenAll: function ($items) {

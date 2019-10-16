@@ -45,7 +45,7 @@ module.exports = function (req, res) {
             }
             return res.send(result);
           } else {
-            res.status(500).send('Обьект не был создан.');
+            res.status(500).send('The object was not created.');
           }
         }).catch(function (err) {
           scope.logRecorder.stop();

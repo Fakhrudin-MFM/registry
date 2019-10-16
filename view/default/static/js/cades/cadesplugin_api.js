@@ -195,18 +195,18 @@
     function isChromiumBased()
     {
         var retVal_chrome = navigator.userAgent.match(/chrome/i);
-        //some versions IE8 with connected plug-in chromeframe it is defined as
+        //in some versions of IE8 with a plug-in chromeframe, it is defined as
         //Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0; chromeframe/29.0.1547.67;
-        // and maybe in the branch Chrome
+        // and maybe in the Chrome branch
         var retVal_chromeframe = navigator.userAgent.match(/chromeframe/i);
         isOpera = navigator.userAgent.match(/opr/i);
         isYaBrowser = navigator.userAgent.match(/YaBrowser/i);
 
-        if(retVal_chrome == null) // In Firefox and IE work through NPAPI
+        if(retVal_chrome == null) // In Firefox anf IE we work through NPAPI
             return false;
         else
         {
-            // In Chrome and Opera work through асandнхронную версandю
+            // In Chrome and Opera we work through the asynchronous version
             if(retVal_chrome.length > 0 || isOpera != null )
             {
                 return true;
@@ -215,45 +215,45 @@
         return false;
     }
 
-    // Function of the activation of objects CryptoPro Pro EDS Browser plug-in
+    // The activation function of CryptoPro EDS objects Browser plug-in
     function CreateObject(name) {
         if (isIOS()) {
-            // На iOS для созданandя объектов andспользуется функцandя
-            // call_ru_cryptopro_npcades_10_native_bridge, определенная в IOS_npcades_supp.js
+            // On iOS, the function is used to create objects.
+            // call_ru_cryptopro_npcades_10_native_bridge, defined in IOS_npcades_supp.js
             return call_ru_cryptopro_npcades_10_native_bridge("CreateObject", [name]);
         }
         if (isIE()) {
-             // In Internet Explorer создаются COM-объекты
+             // COM objects are created in Internet Explorer
              if (name.match(/X509Enrollment/i)) {
                 try {
-                    // Объекты CertEnroll создаются через CX509EnrollmentWebClassFactory
+                    // Objects CertEnroll created through CX509EnrollmentWebClassFactory
                     var objCertEnrollClassFactory = document.getElementById("certEnrollClassFactory");
                     return objCertEnrollClassFactory.CreateObject(name);
                 }
                 catch (e) {
-                    throw("To create objects X509Enrollment следует настроandть веб-узел на andспользованandе проверкand подлandнностand по протоколу HTTPS");
+                    throw("To create X509Enrollment objects you should configure the web site to use protocol of HTTPS authentication");
                 }
             }
-            // Объекты CAPICOM and CAdESCOM создаются через CAdESCOM.WebClassFactory
+            // CAPICOM and CAdESCOM objects are created through CAdESCOM.WebClassFactory
             try {
                 var objWebClassFactory = document.getElementById("webClassFactory");
                 return objWebClassFactory.CreateObject(name);
             }
             catch (e) {
-                // Для версandй плагandна нandже 2.0.12538
+                // For versions of the plugin under 2.0.12538
                 return new ActiveXObject(name);
             }
         }
-        // In Firefox, Safari создаются объекты NPAPI
+        // NPAPI objects are created in Firefox, Safari
         return pluginObject.CreateObject(name);
     }
 
-    // Функцandя актandвацandand асandнхронных объектов КрandптоПро ЭЦП Browser plug-in
+    // The activation function of asynchronous objects of CryptoPro EDS Browser plug-in
     function CreateObjectAsync(name) {
         return pluginObject.CreateObjectAsync(name);
     }
 
-    //Functions for IOS
+    //Functions for
     var ru_cryptopro_npcades_10_native_bridge = {
       callbacksCount : 1,
       callbacks : {},
@@ -306,8 +306,8 @@
         return tmpobj;
     }
 
-    //Inыводandм окно поверх другandх с предложенandем установandть расшandренandе для Opera.
-    //Еслand установленна переменная cadesplugin_skip_extension_install - не предлагаем установandть расшandренandе
+    //Display a window on top of others with a suggestion to install an extension for Opera
+    //If the cadesplugin_skip_extension_install variable is set - do not suggest to install the extension.
     function install_opera_extension()
     {
         if (!window.cadesplugin_skip_extension_install)
@@ -318,8 +318,8 @@
                 ovr.style = "visibility: hidden; position: fixed; left: 0px; top: 0px; width:100%; height:100%; background-color: rgba(0,0,0,0.7)";
                 ovr.innerHTML = "<div id='cadesplugin_ovr_item' style='position:relative; width:400px; margin:100px auto; background-color:#fff; border:2px solid #000; padding:10px; text-align:center; opacity: 1; z-index: 1500'>" +
                                 "<button id='cadesplugin_close_install' style='float: right; font-size: 10px; background: transparent; border: 1; margin: -5px'>X</button>" +
-                                "<p>Для работы КрandптоПро ЭЦП Browser plugin на данном сайте необходandмо установandть расшandренandе andз каталога дополненandй Opera." +
-                                "<p><button id='cadesplugin_install' style='font:12px Arial'>Install extension</button></p>" +
+                                "<p>For correct work of CriptoPro EDS on this site you need to install an extension from the Opera add-ons catalog." +
+                                "<p><button id='cadesplugin_install' style='font:12px Arial'>Install an extension</button></p>" +
                                 "</div>";
                 document.getElementsByTagName("Body")[0].appendChild(ovr);
                 var btn_install = document.getElementById("cadesplugin_install");
@@ -363,7 +363,7 @@
             },
         false);
     }
-    //Load extensions for Chrome, Opera, YaBrowser
+    ///Load the extension for Chrome, Opera, YaBrowser
     function load_extension()
     {
         var fileref = document.createElement('script');
@@ -380,7 +380,7 @@
         document.getElementsByTagName("head")[0].appendChild(fileref);
     }
 
-    //Load plug-in for NPAPI
+    //Load the plugin for NPAPI
     function load_npapi_plugin()
     {
         var elem = document.createElement('object');
@@ -404,7 +404,7 @@
         }
     }
 
-    //Отправляем событandе что все ок.
+    //We send an event that everything is ok.
     function plugin_loaded()
     {
         plugin_resolved = 1;
@@ -416,12 +416,12 @@
         }
     }
 
-    //Отправляем событandе что сломалandсь.
+    //We send event that something went wrong.
     function plugin_loaded_error(msg)
     {
         if(isChromiumBased())
         {
-            //в асandнхронном варandанте подключаем оба расшandренandя, еслand сломалandсь оба пробуем установandть для Opera
+            //in the asynchronous version we connect both extensions, if both are broken - install for Opera
             failed_extensions++;
             if(failed_extensions<2)
                 return;
@@ -442,7 +442,7 @@
         }
     }
 
-    //проверяем что у нас хоть какое то событandе ушло, and еслand не уходandло кandдаем еще раз ошandбку
+    //check that we have at least some event gone, and if it is not we send another mistake
     function check_load_timeout()
     {
         if(plugin_resolved == 1)
@@ -450,14 +450,14 @@
         plugin_resolved = 1;
         if(canPromise)
         {
-            plugin_reject("Истекло время ожandданandя загрузкand плагandна");
+            plugin_reject("Timed out loading plugin");
         } else {
             window.postMessage("cadesplugin_load_error", "*");
         }
 
     }
 
-    //Inспомогательная функцandя для NPAPI
+    //Helper function for NPAPI
     function createPromise(arg)
     {
         return new Promise(arg);
@@ -470,13 +470,13 @@
         }
         catch (err) {
             document.getElementById("cadesplugin_object").style.display = 'none';
-            // Объект создать не удалось, проверandм, установлен лand
-            // вообще плагandн. Такая возможность есть не во всех браузерах
+            // Object could not be created, check to see if
+            // the plugin is installed. This feature is not available in all browsers.
             var mimetype = navigator.mimeTypes["application/x-cades"];
             if (mimetype) {
                 var plugin = mimetype.enabledPlugin;
                 if (plugin) {
-                    plugin_loaded_error("Плагandн загружен, но не создаются обьекты");
+                    plugin_loaded_error("Plugin loaded, but objects are not created");
                 }else
                 {
                     plugin_loaded_error("Error loading plugin");
@@ -495,7 +495,7 @@
         div.innerHTML = "<!--[if lt IE 9]><iecheck></iecheck><![endif]-->";
         var isIeLessThan9 = (div.getElementsByTagName("iecheck").length == 1);
         if (isIeLessThan9) {
-            plugin_loaded_error("Internet Explorer версandand 8 and нandже не поддержandвается");
+            plugin_loaded_error("Internet Explorer version 8 and below is not supported.");
             return;
         }
 

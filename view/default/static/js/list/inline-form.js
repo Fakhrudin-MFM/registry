@@ -315,7 +315,7 @@
 
     remove: function () {
       var data = this.dt.row(this.row).data() || {},
-        message = 'Remove object from collection',
+        message = 'Remove object from collection?',
         _list = this.owner.list,
         _this = this;
       if (data.__class && data._id && confirm(message)) {
@@ -342,7 +342,7 @@
     },
 
     delete: function () {
-      this.owner.list.del('Delete obkect?', this.owner.list.toDelete('.'+ SELECTED_CLASS));
+      this.owner.list.del('Delete object?', this.owner.list.toDelete('.'+ SELECTED_CLASS));
     },
 
     cancel: function (resize) {

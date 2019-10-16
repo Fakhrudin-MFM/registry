@@ -11,7 +11,7 @@ const F = require('core/FunctionCodes');
 function ConcurencyChecker(options) {
 
   if (!options.ds) {
-    throw new Error('не указан ds (DataSource)');
+    throw new Error('No ds (DataSource) specified');
   }
 
   const tn = options.tableName || 'ion_concurency';

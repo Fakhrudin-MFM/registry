@@ -27,7 +27,7 @@ module.exports = function (req, res) {
            */
           function (item) {
             if (!item) {
-              return res.status(404).send('Не найден подписываемый объект данных.');
+              return res.status(404).send('No signed data object found.');
             }
 
             scope.signManager.getDataForSigning(

@@ -18,7 +18,7 @@ module.exports = function (req, res) {
         scope.securedDataRepo.getItem(req.params.class, req.params.id, {user: user})
         .then(function (item) {
           if (!item) {
-            return Promise.reject(new Error('Объект не найден!'));
+            return Promise.reject(new Error('Object not found!'));
           }
           return logger.getChanges({className: req.params.class, id: req.params.id});
         }).then(function (result) {

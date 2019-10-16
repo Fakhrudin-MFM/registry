@@ -7,8 +7,8 @@
     maxSize: 10485760,
     extensions: null,
     mimeTypes: null,
-    tooSmall: "Minimum file size {limit}",
-    tooBig: "Maximun file size {limit}",
+    tooSmall: "Minimum file size - {limit}",
+    tooBig: "Maximun file size - {limit}",
     wrongExtension: "Allowed only: {extensions}",
     wrongMimeType: "Allowed only: {mimeTypes}",
     onlyImage: false,
@@ -18,9 +18,9 @@
     minWidth: 1,
     notImage: "File is not an image.",
     overHeight: "Maximun height - {limit} pix.",
-    overWidth: "Maximun width {limit} pix.",
-    underHeight: "Minimum height {limit} pix.",
-    underWidth: "Minimum width {limit} pix.",
+    overWidth: "Maximun width - {limit} pix.",
+    underHeight: "Minimum height - {limit} pix.",
+    underWidth: "Minimum width - {limit} pix.",
     tooMany: "Too many files.",
     alreadyExists: "File is already selected",
     confirmRemoveStatus: ['done', 'uploading']
@@ -251,8 +251,8 @@
 
   UFile.prototype.validate = function () {
     var self = this;
-    // trying to upload file as an image, and the result, start validating
-    // loading of the image happens at the events, and not consistently
+    // trying to upload file as an image and the result, and start validating the result
+    // image loading happens at the events and not consistently
     this.image = new Image;
     this.image.onload = function () {
       self.startValidate();

@@ -28,7 +28,8 @@ module.exports = function (req, res) {
           {
             user: user,
             filter: formFilter(moduleName, scope, req),
-            forceEnrichment: itemEagerLoading(scope.metaRepo.getMeta(req.params.class), null, scope, [])
+            forceEnrichment: itemEagerLoading(scope.metaRepo.getMeta(req.params.class), null, scope, []),
+            lang: lang
           }
         )
           .then(
@@ -45,7 +46,7 @@ module.exports = function (req, res) {
                   onError(scope, err, res);
                 }
               } else {
-                res.status(404).send('Объект не найден');
+                res.status(404).send('Object not found');
               }
             }
           )

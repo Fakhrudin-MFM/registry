@@ -41,7 +41,7 @@ module.exports = function (req, res) {
             }
             return res.send(result);
           }
-          res.status(500).send('Ошибка при сохранении объекта');
+          res.status(500).send('Error saving object');
         }).
         catch(
           function (err) {

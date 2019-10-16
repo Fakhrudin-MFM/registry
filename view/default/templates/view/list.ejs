@@ -58,8 +58,7 @@
 <div class="panel panel-default list-container">
   <div class="panel-body">
 
-
-    <% if (viewFilters && viewFilters.length) { %>
+    <%if (typeof viewFilters !== 'undefined' && viewFilters && viewFilters.length) {%>
       <%- partial('./list-view-filter', {filters: viewFilters}) %>
     <% } %>
 
@@ -84,10 +83,10 @@
 
         var code = command.id.toLowerCase();
       %>
-      <button id="<%=`${ids.listBtn}${code}`%>" type="button" class="<%=code%> btn btn-success command"
+      <button id="<%=`${ids.listBtn}${code}`%>" type="button" class="<%=code%> <%=command.id.toUpperCase()%> btn btn-success command"
               title="<%=command.caption%>" data-id="<%=command.id%>" style="display:none;"><%-html%></button>
       <%});%>
-      <button id="<%=`${ids.listBtn}close`%>" type="button" class="close btn btn-default modal-closer"
+      <button id="<%=`${ids.listBtn}close`%>" type="button" class="CLOSE btn btn-default modal-closer"
               title="Close" style="display:none;">Close</button>
       <button id="<%=`${ids.listBtn}reload`%>" type="button" class="reload btn btn-default"
               title="Update"><span class="fa fa-refresh"></span></button>

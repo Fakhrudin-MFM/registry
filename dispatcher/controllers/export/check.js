@@ -2,35 +2,23 @@
 
 const respond = require('../../../backend/respond');
 const onError = require('../../../backend/apiError');
-const nodeAclId = require('../../../backend/menu').nodeAclId;
-const Permissions = require('core/Permissions');
-const canonicNode = require('../../../backend/menu').canonicNode;
+const processNavigation = require('../../../backend/menu').processNavigation;
 
 module.exports = function (req, res) {
   respond(['aclProvider', 'export', 'auth'],
     (scope) => {
       try {
-        let n = canonicNode(req.params.node);
-        let node = scope.metaRepo.getNode(n.code, n.ns);
-        if (!node) {
-          return onError(scope, new Error('Страница не найдена'), res, false);
-        }
         let user = scope.auth.getUser(req);
-
-        scope.aclProvider.checkAccess(user, nodeAclId(node), Permissions.READ)
-          .then((accessible) => {
-            if (!accessible) {
-              throw new Error('Доступ запрещен!');
-            }
-
-            let cm = scope.metaRepo.getMeta(req.params.class ? req.params.class : node.classname, null, n.ns);
+        processNavigation(scope, req)
+          .then((info) => {
+            let cm = info.classMeta;
             if (!cm) {
-              throw new Error('Не удалось определить класс');
+              throw new Error('Could not determine class');
             }
 
             let exporter = scope.export.exporter(req.params.format, {class: cm, item: req.params.id});
             if (!exporter) {
-              throw new Error('Не удалось определить экспортер ' + req.params.format);
+              throw new Error('Could not determine exporter ' + req.params.format);
             }
             return scope.export
               .status(

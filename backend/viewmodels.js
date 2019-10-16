@@ -383,7 +383,7 @@ module.exports.tableOptions = function (cm, vm, metaRepo, searchOptions, sorting
       }
       result.rowGroup = {dataSrc: pn};
     } else {
-      throw new Error('В классе "' + cm.getCaption() + '" не найден атрибут "' + pn + '" указанный в качестве группирующего для списка.');
+      throw new Error('In class "' + cm.getCaption() + '" attribute not found "' + pn + '" specified as a group for the list.');
     }
   }
 
@@ -481,7 +481,7 @@ module.exports.collectionTableOptions = function (scope, node) {
     }
 
     eagerLoading = overrideEagerLoading(
-      moduleName, eagerLoading, node.namespace + '@' + node.code, rcm.getCanonicalName(), 'list', scope.settings
+      moduleName, eagerLoading, node ? node.namespace + '@' + node.code : null, rcm.getCanonicalName(), 'list', scope.settings
     );
 
     if (eagerLoading) {
@@ -573,7 +573,7 @@ function fillFields(fields, cm, metaRepo) {
 module.exports.adjustFields = function (cm, vm, metaRepo) {
   for (let i = 0; i < vm.tabs.length; i++) {
     fillFields(vm.tabs[i].fullFields || [], cm, metaRepo);
-    fillFields(vm.tabs[i].shortFields || [], cm, metaRepo); // || [] - багфикс, если не задана табс - валится ошибка
+    fillFields(vm.tabs[i].shortFields || [], cm, metaRepo); // || [] - bugfix, if tabs are not specified, an error occurs
   }
 };
 

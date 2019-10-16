@@ -17,7 +17,7 @@ module.exports.list = function (req, res) {
       let user = scope.auth.getUser(req);
       let cm = scope.metaRepo.getMeta(req.params.class);
       if (!cm) {
-        return res.send({err: 'Неправильные данные'});
+        return res.send({err: 'Incorrect data'});
       }
       while (cm) {
         classes.push(cm.getCanonicalName());
@@ -28,7 +28,7 @@ module.exports.list = function (req, res) {
         return res.send({filters: filters});
       }).
       catch(function () {
-        return res.send({err: 'Ошибка загрузки списка фильтров'});
+        return res.send({err: 'Error loading filter list'});
       });
     }
   );
@@ -46,11 +46,11 @@ module.exports.add = function (req, res) {
       let user = scope.auth.getUser(req);
       let cm = scope.metaRepo.getMeta(req.params.class);
       if (!cm || !req.body) {
-        return res.send({err: 'Неправильные данные'});
+        return res.send({err: 'Incorrect data'});
       }
       scope.userFilters.add(user.id(), cm.getCanonicalName(), req.body)
         .then(filter => res.send({filter: filter}))
-        .catch(() => res.send({err: 'Ошибка сохранения фильтра'}));
+        .catch(() => res.send({err: 'Error saving filter'}));
     }
   );
 };
@@ -67,14 +67,14 @@ module.exports.edit = function (req, res) {
       var user = scope.auth.getUser(req);
       var cm = scope.metaRepo.getMeta(req.params.class);
       if (!cm || !req.body || !req.body.id) {
-        return res.send({err: 'Неправильные данные'});
+        return res.send({err: 'Incorrect data'});
       }
       scope.userFilters.edit(user.id(), cm.getCanonicalName(), req.body.id, req.body).
       then(function (filter) {
         return res.send({filter: filter});
       }).
       catch(function () {
-        return res.send({err: 'Ошибка редактирования объекта'});
+        return res.send({err: 'Object editing error'});
       });
     }
   );
@@ -91,7 +91,7 @@ module.exports.remove = function (req, res) {
     function (scope) {
       let user = scope.auth.getUser(req);
       if (!req.body || !req.body.filterId) {
-        return res.send({err: 'Неправильные данные'});
+        return res.send({err: 'Incorrect data'});
       }
       scope.userFilters.remove(user.id(), req.body.filterId).
       then(function (result) {

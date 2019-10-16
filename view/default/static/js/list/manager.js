@@ -6,7 +6,7 @@
   var DEFAULT_DT_DOM = "<'row'<'col-xs-6 dt-filter-col'f><'col-xs-6'l>r>t<'row'<'col-xs-6'i><'col-xs-6'p>>";
   var DOWN_DT_DOM = "t<'row'<'col-md-12 text-right'ipl>>";
 
-  function ListManager($table) {
+  window.ListManager = function ListManager($table) {
     this.currentData = {};
     this.inserted = {};
     this.insertedRows = [];
@@ -20,6 +20,7 @@
     this.options.multiSelect = this.options.inlineForm ? false : this.options.multiSelect;
     //this.options.dt.searching = true;
     this.$table = $table;
+
     this.$container = $table.closest('.list-container');
     this.$controls = this.$container.find('.list-tools');
     this.$loading = this.$container.find('.table-loading');
@@ -138,10 +139,6 @@
 
     init: function () {
       try {
-        this.commandManager = new ListCommandManager(this.options.commands, this.$controls.find('.command'), this.$table);
-        this.filter = new ListFilter(this);
-        this.setDtRenders();
-        this.prepareDtOptions({});
 
         this.$table.on('preXhr.dt', function (e, settings, data) {
           this.onPreLoad(e, settings, data);
@@ -150,6 +147,12 @@
         this.$table.on('xhr.dt', function (e, settings, json, xhr) {
           this.onLoad(e, settings, json, xhr);
         }.bind(this));
+
+        this.setDtRenders();
+        this.prepareDtOptions({});
+        this.dt = this.$table.DataTable(this.getDtOptions());
+        this.commandManager = new ListCommandManager(this.options.commands, this.$controls.find('.command'), this.$table);
+        this.filter = new ListFilter(this);
 
         this.$table.on('draw.dt', function () {
           this.$table.find('.checkbox').iCheck({
@@ -160,7 +163,6 @@
           customizeDatatable(this);
         }.bind(this));
 
-        this.dt = this.$table.DataTable(this.getDtOptions());
         this.initSearching();
         customizeDatatable(this);
         this.inlineForm = this.options.inlineForm ? new InlineForm(this) : null;
@@ -269,7 +271,7 @@
                 };
               }
               filter.select2(options);
-            } 
+            }
             filter.on('change', function (e) {
               _this.reload(true);
             });
@@ -427,7 +429,10 @@
                   var v = filter.val();
                   if (v) {
                     var f = {};
-                    v = filter.attr('type') === 'datetime' ? moment(v, me.options.locale.dateTimeFormat).format() : v;
+                    if (filter.attr('type') === 'datetime') {
+                      var m = (filter.data('mode') === 2) ? moment.utc(v, me.options.locale.dateTimeFormat) : moment(v, me.options.locale.dateTimeFormat);
+                      v = m.format();
+                    }
                     f[filter.data('operation')] = ['$' + p, v];
                     filters.push(f);
                   }
@@ -553,6 +558,19 @@
       if (this.insertedRows.length) {
         var info = this.dt.page.info();
         if (json) {
+          var mapData = {};
+          for (var i = 0; i < json.data.length; i++) {
+            mapData[json.data[i]._id] = true;
+            if (this.inserted[json.data[i]._id]) {
+              this.insertedRows.splice(this.insertedRows.indexOf(this.inserted[json.data[i]._id]), 1);
+              delete this.inserted[json.data[i]._id];
+            }
+          }
+        }
+      }
+
+      if (this.insertedRows.length) {
+        if (json) {
           var end = info.start + info.length;
           if (end > json.recordsFiltered) {
             var start, stop;
@@ -562,13 +580,9 @@
             }
             start = info.start - json.recordsFiltered;
             if (start < 0) start = 0;
-            var mapData = {};
-            for (var j = 0; j < json.data.length; ++j) {
-              mapData[json.data[j]._id] = true;
-            }
-            for (var i = start; i < stop; i++) {
-              if (!mapData[this.insertedRows[i]._id]) {
-                json.data.push(this.insertedRows[i]);
+            for (var j = start; j < stop; j++) {
+              if (!mapData[this.insertedRows[j]._id]) {
+                json.data.push(this.insertedRows[j]);
               }
             }
           }
@@ -579,7 +593,7 @@
       if (json && json.permissions) {
         if (!json.permissions.read) {
           this.$controls.remove();
-          messageCallout.error('Access denied!');
+          messageCallout.error('Access is denied!');
         }
         if (!json.permissions.use) {
           this.$controls.find('.create').remove();
@@ -621,18 +635,18 @@
       for (var i = 0; i < selected.length; ++i) {
         var data = selected[i];
         if (data[self.options.master.backRef]) {
-          var msg = '<p>Selected object by reference "'
+          var msg = '<p>Selected object from link "'
             + self.options.master.backRefCaption
-            + '" connected with<a href="'
+            + '" link with <a href="'
             + self.options.master.backRefUrlPattern.replace(':id', data[self.options.master.backRef])
-            + '">by other object</a>.</p><p>Are you sure you want to break this connection?</p>';
+            + '">by other object</a>.</p><pAre you sure you want to break this connection?/p>';
           if (data[self.options.master.backRef + '_ref']) {
-            msg = '<p>Selected object by reference "'
+            msg = '<p>Selected object from link "'
               + self.options.master.backRefCaption
-              + '" connected with<a href="'
+              + '" link with <a href="'
               + self.options.master.backRefUrlPattern.replace(':id', data[self.options.master.backRef])
               + '">' + data[self.options.master.backRef + '_ref'].__string
-              + '</a>.</p><p>Are you sure you want to break this connection?</p>';
+              + '</a>.</p><pAre you sure you want to break this connection?/p>';
           }
           confirmations.push('<div title="Attention!">' + msg + '</div>');
         }
@@ -721,7 +735,7 @@
                 this.dt.rows.add([result]);
               }
             }
-            this.$table.trigger(this.createEvent());
+            //this.$table.trigger(this.createEvent());
           }
           this.dt.draw(false);
         }
@@ -1275,6 +1289,12 @@
     this.$group.data('listManager', this);
     this.onLoadCallback = onLoadCallback;
     ListManager.call(this, $group.find('.table'));
+    if (this.$table) {
+      this.$table.on('change', function (event) {
+        this.$group.attr('length', this.dt.rows().count() + event.rowDelta);
+        this.$attr.val(JSON.stringify(event.changes)).change();
+      }.bind(this));
+    }
   };
 
   $.extend(AttrListManager.prototype, ListManager.prototype, {
@@ -1287,16 +1307,14 @@
       addAsyncSerialHandler(this.initList.bind(this));
     },
 
-    _changeHandler: function(event) {
-      this.$attr.val(JSON.stringify(event.changes)).change();
-    },
-
     initList: function (nextCallback) {
       try {
         var _this = this;
-        this.commandManager = new AttrListCommandManager(this.prop.commands, this.$controls.find('.command'), this.$table);
+
         this.setDtRenders();
         this.prepareDtOptions();
+        this.dt = this.$table.DataTable(this.getDtOptions());
+        this.commandManager = new AttrListCommandManager(this.prop.commands, this.$controls.find('.command'), this.$table, this.dt);
 
         var $tabPane = this.$table.closest('.tab-pane');
 
@@ -1316,18 +1334,12 @@
           nextCallback = null;
         }.bind(this));
 
-        this.dt = this.$table.DataTable(this.getDtOptions());
-
         this.$table.on('draw.dt', function () {
           this.triggerRowSelect();
           customizeDatatable(this);
         }.bind(this));
 
         this.$table.on('init.dt', function (event) {
-        }.bind(this));
-
-        this.$table.on('change', function (event) {
-          this._changeHandler.apply(this, [event])
         }.bind(this));
 
         if (this.options.dt.reorderable && this.options.dt.rowReorder) {
@@ -1356,7 +1368,7 @@
         this.$group.removeClass('loading');
         this.initHiddenLinks();
       } catch (err) {
-        messageCallout.error('Collection initialization error ' + this.prop.caption);
+        messageCallout.error('Collection initialization error' + this.prop.caption);
         console.error(err);
         nextCallback && nextCallback();
       }

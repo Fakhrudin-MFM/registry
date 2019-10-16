@@ -19,7 +19,7 @@ module.exports = function (req, res) {
         var tplData = {
           baseUrl: req.app.locals.baseUrl,
           module: moduleName,
-          title: 'Страница не найдена',
+          title: 'Page not found',
           pageCode: '404',
           user: user
         };

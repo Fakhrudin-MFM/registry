@@ -283,7 +283,7 @@
     },
 
     remove: function () {
-      if (confirm('Remove selected item from link?')) {
+      if (confirm('Remove selected object from link?')) {
         this.$displayValue.html('');
         this.$value.val('').change();
       }

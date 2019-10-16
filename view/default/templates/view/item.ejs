@@ -45,10 +45,10 @@
       if (typeof containerProperty !== 'undefined' && containerProperty) {
         if (containerProperty.type === PropertyTypes.REFERENCE) {
           locals.preTitle = `Creating an object by reference "${containerProperty.caption}"
-        of object "${master.item.toString(null, utils.dateCallback())}"`;
+        object "${master.item.toString(null, utils.dateCallback())}"`;
         } else if (containerProperty.type === PropertyTypes.COLLECTION) {
           locals.preTitle = `Creating an object in the collection "${containerProperty.caption}"
-        of object "${master.item.toString(null, utils.dateCallback())}"`;
+        object "${master.item.toString(null, utils.dateCallback())}"`;
         }
       }
     }

@@ -63,7 +63,7 @@
       <!--
       <hr>
       <div class="text-center">
-        Sign up with social networks.
+        Sign up with social networks:
       </div>
       <div class="socials margin-top-10 text-center">
         <a href="<%=module%>/auth/fb" class="btn btn-facebook"><i class="fa fa-facebook"></i> Facebook</a>
@@ -91,6 +91,6 @@
       $('input[name=timezone]').val(moment.tz.guess());
     });
 </script>
-<%- pageEndContent %>
+  <%- typeof pageEndContent !== 'undefined' ? pageEndContent : "" %>
 </body>
 </html>

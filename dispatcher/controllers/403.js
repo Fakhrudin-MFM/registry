@@ -19,7 +19,7 @@ module.exports = function (req, res) {
         var tplData = {
           baseUrl: req.app.locals.baseUrl,
           module: moduleName,
-          title: 'Доступ запрещен',
+          title: 'Access is denied',
           pageCode: '403',
           user: user
         };

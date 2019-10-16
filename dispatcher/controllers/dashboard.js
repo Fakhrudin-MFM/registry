@@ -20,7 +20,7 @@ module.exports = function (req, res) {
       var params = {
         baseUrl: req.app.locals.baseUrl,
         module: moduleName,
-        title: 'Контрольная панель',
+        title: 'Control panel',
         node: null,
         pageCode: 'dashboard',
         user,

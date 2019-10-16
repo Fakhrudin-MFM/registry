@@ -46,7 +46,7 @@
 
     this.$importBtn.click(function () {
       this.$invalidJson.hide();
-      if (confirm('Import geo-json to map?')) {
+      if (confirm('Import geo-json to the map?')) {
         this.setGeoData(this.$exportData.val());
         if (!this.importJson(this.geodata))  {
           this.$invalidJson.show();

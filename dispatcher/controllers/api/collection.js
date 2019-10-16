@@ -25,10 +25,10 @@ module.exports.list = function (req, res) {
         let lang = locales[0] ? locales[0].language : 'ru';
         scope.logRecorder.start();
         let user = scope.auth.getUser(req);
-        scope.securedDataRepo.getItem(req.params.class, req.params.id, {user: user})
+        scope.securedDataRepo.getItem(req.params.class, req.params.id, {user, lang})
           .then((found) => {
             if (!found) {
-              return Promise.reject(new Error('Не найден контейнер коллекции.'));
+              return Promise.reject(new Error('No collection container found.'));
             }
             item = found;
             prop = item.properties[req.params.collection];
@@ -86,7 +86,7 @@ module.exports.add = function (req, res) {
                 container = found;
                 return scope.securedDataRepo.getItem(req.body.class, req.body.id, {user: user});
               }
-              throw new Error('Не найден контейнер.');
+              throw new Error('No container found.');
             }
           )
           .then(
@@ -98,12 +98,12 @@ module.exports.add = function (req, res) {
                 }
                 return scope.securedDataRepo.put(container, req.params.collection, [found], logger, {user: user});
               }
-              throw new Error('Не найден объект для добавления в коллекцию.');
+              throw new Error('No object found to be added to the collection.');
             }
           )
           .then(
             function () {
-              res.send('Выполнено.');
+              res.send('Done.');
             }
           )
           .catch(err => onError(scope, err, res));
@@ -126,13 +126,13 @@ module.exports.remove = function (req, res) {
         let user = scope.auth.getUser(req);
         let items = req.body.items;
         if (!Array.isArray(items)) {
-          throw new Error('Некорректные данные для удаления.');
+          throw new Error('Incorrect data to delete.');
         }
         scope.securedDataRepo.getItem(req.params.class, req.params.id, {user: user})
           .then(
             (found) => {
               if (!found) {
-                throw new Error('Не найден контейнер коллекции.');
+                throw new Error('No collection container found.');
               }
               container = found;
               const founds = [];
@@ -151,7 +151,7 @@ module.exports.remove = function (req, res) {
           .then(
             (founds) => {
               if (!founds || founds.length !== items.length) {
-                throw new Error('Не найдены элементы коллекции.');
+                throw new Error('No collection items found.');
               }
               let logger = null;
               if (scope.changelogFactory) {
@@ -161,7 +161,7 @@ module.exports.remove = function (req, res) {
             }
           )
           .then(() => {
-            res.send('Выполнено.');
+            res.send('Done.');
           })
           .catch(err => onError(scope, err, res, true));
       } catch (err) {
@@ -175,7 +175,7 @@ module.exports.remove = function (req, res) {
 function reorderDiff(req, res, scope) {
   try {
     if (!Array.isArray(req.body.diff)) {
-      throw new Error('Некорректный запрос');
+      throw new Error('Invalid request');
     }
     let container;
     let sortings = [];
@@ -187,17 +187,17 @@ function reorderDiff(req, res, scope) {
     scope.securedDataRepo.getItem(req.params.class, req.params.id, {user: user, needed: {}})
       .then((found) => {
         if (!found) {
-          throw new Error('Не найден контейнер коллекции.');
+          throw new Error('No collection container found.');
         }
         container = found;
         let needed = {};
         let cpm = container.getMetaClass().getPropertyMeta(req.params.collection);
         if (!cpm) {
-          throw new Error('Не найден атрибут коллекции.');
+          throw new Error('No collection attribute found.');
         }
         const ccm = scope.metaRepo.getMeta(cpm.itemsClass, null, container.getMetaClass().getNamespace());
         if (!Array.isArray(cpm.selSorting) || !cpm.selSorting) {
-          throw new Error('Не найдены параметры сортировки.');
+          throw new Error('No sorting options found.');
         }
         cpm.selSorting.forEach((s) => {
           sortings.push(s.property);
@@ -232,7 +232,7 @@ function reorderDiff(req, res, scope) {
           const left = itemsMap.get(`${req.body.diff[i].left.class}@${req.body.diff[i].left.id}`);
           const right = itemsMap.get(`${req.body.diff[i].right.class}@${req.body.diff[i].right.id}`);
           if (!left || !right) {
-            throw new Error('Не найден объект коллекции');
+            throw new Error('No collection object found');
           }
           const rightUpd = {};
           sortings.forEach((srt) => {
@@ -270,7 +270,7 @@ function reorderDiff(req, res, scope) {
 function reorder(req, res, scope) {
   try {
     if (!req.body.items || req.body.items.length < 2) {
-      throw new Error('Некорректный запрос');
+      throw new Error('Invalid request');
     }
     let container;
     let sortings = [];
@@ -280,15 +280,15 @@ function reorder(req, res, scope) {
     scope.securedDataRepo.getItem(req.params.class, req.params.id, {user: user, needed: {}})
       .then((found) => {
         if (!found) {
-          throw new Error('Не найден контейнер коллекции.');
+          throw new Error('No collection container found.');
         }
         container = found;
         let cpm = container.getMetaClass().getPropertyMeta(req.params.collection);
         if (!cpm) {
-          throw new Error('Не найден атрибут коллекции.');
+          throw new Error('No collection attribute found.');
         }
         if (!Array.isArray(cpm.selSorting) || !cpm.selSorting) {
-          throw new Error('Не найдены параметры сортировки.');
+          throw new Error('No sorting options found.');
         }
         cpm.selSorting.forEach((s) => {
           sortings.push(s.property);
@@ -302,7 +302,7 @@ function reorder(req, res, scope) {
       })
       .then((l) => {
         if (!l) {
-          throw new Error('Не найден элемент коллекции, заданный первым.');
+          throw new Error('No collection item found, set first.');
         }
         left = l;
         return scope.securedDataRepo.getItem(
@@ -313,7 +313,7 @@ function reorder(req, res, scope) {
       })
       .then((right) => {
         if (!right) {
-          throw new Error('Не найден элемент коллекции, заданный вторым.');
+          throw new Error('No collection item found, set second.');
         }
         let logger = null;
         if (scope.changelogFactory) {
@@ -373,7 +373,7 @@ module.exports.reorder = function (req, res) {
       } else if (Array.isArray(req.body.items)) {
         reorder(req, res, scope);
       } else {
-        onError(scope, new Error('некорректный запрос'), res, true);
+        onError(scope, new Error('incorrect request'), res, true);
       }
     },
     res

@@ -210,7 +210,7 @@ function historyPage (panel, url, locale) {
       changes = changes + '<div><span class="parameter">' + param + '</span><span class="value">' + change.updates[param] + '</span></div>';
     }
     return '<div class="changelog">' +
-        '<div class="changelog-header"><span>' + time + '</span> <span >' + type + '</span> by user <span>' + authorName + '</span></div>' +
+        '<div class="changelog-header"><span>' + time + '</span> <span >' + type + '</span> by user<span>' + authorName + '</span></div>' +
         '<div class="changelog-updates">' + changes + '</div>' +
       '</div>';
   };

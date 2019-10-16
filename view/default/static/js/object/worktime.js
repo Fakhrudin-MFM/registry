@@ -248,7 +248,7 @@
   }
 
   function formatTime (time) {
-    return time instanceof Array ? ' from '+ time[0] +':'+ time[1] +' to '+ time[2] +':'+ time[3] : '';
+    return time instanceof Array ? ' from ' + time[0] +':'+ time[1] +' to '+ time[2] +':'+ time[3] : '';
   }
 
   // CONVERTER

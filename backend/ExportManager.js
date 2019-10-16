@@ -229,7 +229,7 @@ function ExportManager(cOptions) {
     return p
       .then((item) => {
         if (!item) {
-          throw new Error('Не найдены данные для экспорта!');
+          throw new Error('No data found for export!');
         }
         let cm = options.item.getMetaClass();
         config = locateConfig(name, cm, 'item');
@@ -394,7 +394,7 @@ function ExportManager(cOptions) {
       () => new Promise((res, rej) => {
         cOptions.auth.userProfile(
           params.user,
-          u => u instanceof User ? res(u) : rej(new Error('Пользователь не найден.'))
+          u => u instanceof User ? res(u) : rej(new Error('User is not found.'))
         );
       })
     ).then((u) => {
@@ -417,7 +417,7 @@ function ExportManager(cOptions) {
       };
       exporter = this.exporter(params.format, options);
       if (!exporter) {
-        throw new Error('Не найдена конфигурация экспорта.');
+        throw new Error('Export configuration not found.');
       }
       return item ? exportItem(params.format, options) : exportList(params.format, options);
     }).then((buf) => {
@@ -493,7 +493,7 @@ function ExportManager(cOptions) {
                     if (storedFiles.length) {
                       return storedFiles[0].getContents();
                     } else {
-                      throw new Error('Файл не найден в удаленном хранилище.');
+                      throw new Error('File not found in remote storage.');
                     }
                   })
                   .then((res) => {

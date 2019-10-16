@@ -1,6 +1,6 @@
 {
   "parametrised": true,
-  "sysTitle": "Registy",
+  "sysTitle": "IONDV. Registry",
   "di" : {
     "changelogFactory": {
       "module": "core/impl/changelogger/DsChangelogFactory",
