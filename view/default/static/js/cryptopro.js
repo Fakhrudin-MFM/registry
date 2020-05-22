@@ -37,8 +37,8 @@ function onCadesLoaded(cb) {
         if (event.data === "cadesplugin_loaded") {
           cb();
         } else if(event.data === "cadesplugin_load_error") {
-          console.error(__('js.cryptopro.notloaded'));
-          cb(__('js.cryptopro.notloaded'));
+          console.error(__('Плагин CryptoPro не загружен.'));
+          cb(__('Плагин CryptoPro не загружен.'));
         }
       },
       false);
@@ -136,7 +136,7 @@ CryptoPro.prototype.open = function (cb) {
       cb();
     });
   } else {
-    cb(new Error(__('js.cryptopro.failopen')));
+    cb(new Error(__('Не удалось открыть хранилище сертификатов!')));
   }
 };
 
@@ -154,7 +154,7 @@ CryptoPro.prototype.close = function (cb) {
       cb();
     });
   } else {
-    cb(new Error(__('js.cryptopro.failclose')));
+    cb(new Error(__('Не удалось закрыть хранилище сертификатов!')));
   }
 };
 
@@ -230,7 +230,7 @@ CryptoPro.prototype.getSignFunc = function(contentType, onFail, data){
 		signFunc = this.makeCadesBesSign;
 		data.attributes["actualSignatureType"] = this.OBJ_CADES_SIGNED_DATA;
 	} else {
-		onFail.call(this, __('js.cryptopro.wrongcontent', {contentType: contentType}));
+		onFail.call(this, __('Для подписи получены данные неподдерживаемого типа: '%contentType'', {contentType: contentType}));
 	}
 	return signFunc;
 }
@@ -241,7 +241,7 @@ CryptoPro.prototype.abort = function () {
 
 CryptoPro.prototype.makeSign = function(params, onFail, onSuccess, onNeedCertSelect) {
   if (typeof cadesplugin === 'undefined') {
-    return onFail(new Error(__('js.cryptopro.noplugin')));
+    return onFail(new Error(__('Не подключен плагин ЭП')));
   }
 
 	var me = this;
@@ -280,7 +280,7 @@ CryptoPro.prototype.makeSign = function(params, onFail, onSuccess, onNeedCertSel
                 me.getCertificate(certKey, function (cert, err) {
                   if (err || !cert) {
                     me.state = "ready";
-                    return onFail.call(me, err || __('js.cryptopro.nocert'));
+                    return onFail.call(me, err || __('Не найден указанный сертификат!'));
                   }
 
                   var signFunc = null;
@@ -312,7 +312,7 @@ CryptoPro.prototype.makeSign = function(params, onFail, onSuccess, onNeedCertSel
                   return;
                 }
                 me.state = "ready";
-                onFail.call(me, __("js.cryptopro.nocerts"));
+                onFail.call(me, __("Не найден указанный сертификат!s"));
               });
 						}
 					} else {
@@ -383,7 +383,7 @@ CryptoPro.prototype.getCertificate = function(thumbprint, cb) {
     try {
       var oCerts = this.store.Certificates.Find(this.CAPICOM_CERTIFICATE_FIND_SHA1_HASH, thumbprint);
       if (oCerts.Count == 0) {
-        return cb(null, new Error(__('js.cryptopro.nocert')));
+        return cb(null, new Error(__('Не найден указанный сертификат!')));
       }
       var result = oCerts.Item(1);
       cb(result);
@@ -408,7 +408,7 @@ CryptoPro.prototype.getCertificate = function(thumbprint, cb) {
       }
     });
   } else {
-   cb(null, new Error(__('js.cryptopro.failgetcert')));
+   cb(null, new Error(__('Не удалось получить объект сертификата!')));
   }
 };
 
@@ -449,7 +449,7 @@ CryptoPro.prototype.makeCadesBesSign = function(dataToSign, certObject, cb) {
       }
     });
   } else {
-    cb(null, new Error(__('js.cryptopro.failmakesign')));
+    cb(null, new Error(__('Не удалось выполнить подпись!')));
   }
 };
 
@@ -499,7 +499,7 @@ CryptoPro.prototype.makeXMLSign = function(dataToSign, certObject, cb) {
       }
     });
   } else {
-    cb(null, new Error(__('js.cryptopro.failmakesign')));
+    cb(null, new Error(__('Не удалось выполнить подпись!')));
   }
 };
 
@@ -554,7 +554,7 @@ CryptoPro.prototype.getCertFromSign = function(sign, cb) {
       }
     });
   } else {
-    cb(null, new Error(__('js.cryptopro.failgetcertsign')));
+    cb(null, new Error(__('Не удалось получить сертификат!')));
   }
 };
 

@@ -19,7 +19,7 @@
         <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
           <% let avatar = user.properties().avatar; %>
           <% if (avatar) { %>
-          <img class="user-avatar" src="<%= avatar.link %>" height="34" alt="<%=__('templates.default.layout.header.userAvatar')%>" />
+          <img class="user-avatar" src="<%= avatar.link %>" height="34" alt="<%=__('User avatar')%>" />
           <% } %>
           <span class="user-name">
             <span class="hidden-xs"><%= user.name() %> <i class="fa fa-angle-down"></i></span>
@@ -27,26 +27,26 @@
         </a>
         <ul class="dropdown-menu hold-on-click">
           <li>
-            <a href="<%=module%>/profile"><i class="fa fa-user"></i> <%=__('templates.default.layout.header.profile')%></a>
+            <a href="<%=module%>/profile"><i class="fa fa-user"></i> <%=__('Профиль пользователя')%></a>
           </li>
           <li>
-            <a href="<%=module%>/chpwd"><i class="fa fa-lock"></i> <%=__('templates.default.layout.header.chpwd')%></a>
+            <a href="<%=module%>/chpwd"><i class="fa fa-lock"></i> <%=__('Сменить пароль')%></a>
           </li>
           <li>
-            <a href="<%=module%>/sign-out"><i class="fa fa-power-off"></i> <%=__('templates.default.layout.header.signOut')%></a>
+            <a href="<%=module%>/sign-out"><i class="fa fa-power-off"></i> <%=__('Выйти')%></a>
           </li>
         </ul>
       </li>
       <% } %>
     </ul>
 
-    <button class="filter btn btn-default ml10" title="<%=__('templates.default.layout.header.filters')%>">
+    <button class="filter btn btn-default ml10" title="<%=__('Фильтры')%>">
       <span class="glyphicon glyphicon-filter"></span>
     </button>
 
     <div id="top-search" class="top-search dropdown">
-      <input type="text" class="form-control" placeholder="<%=__('templates.default.layout.header.search')%>">
-      <span class="clear" title="<%=__('templates.default.layout.header.clearSearch')%>">&times;</span>
+      <input type="text" class="form-control" placeholder="<%=__('Искать...')%>">
+      <span class="clear" title="<%=__('Очистить поиск')%>">&times;</span>
       <ul class="dropdown-menu"></ul>
     </div>
   </nav>

@@ -107,7 +107,7 @@
       if (!this.prop.required || !this.isEmptyValue()) {
         return true;
       }
-      this.addError(__('js.inlineFormCell.required'));
+      this.addError(__('Обязательное поле'));
     },
 
     isEmptyValue: function () {
@@ -133,7 +133,7 @@
       }
       var value = this.$value.val();
       if (value.length && !Inputmask.isValid(value, mask)) {
-        this.addError(__('js.inlineFormCell.notValidMask'));
+        this.addError(__('Значение не соответствует маске'));
         this.$value.one('focus', function (event) {
           this.clearError($input);
           this.setMask(mask);
@@ -283,7 +283,7 @@
     },
 
     remove: function () {
-      if (confirm(__('js.inlineFormCell.deleteFromRef'))) {
+      if (confirm(__('Убрать выбранный объект из ссылки?'))) {
         this.$displayValue.html('');
         this.$value.val('').change();
       }

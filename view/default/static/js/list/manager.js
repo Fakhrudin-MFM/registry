@@ -279,7 +279,7 @@
         });
 
       } catch (err) {
-        messageCallout.error(__('js.listManager.initError'));
+        messageCallout.error(__('Ошибка инициализации списка'));
         console.error(err);
       }
     },
@@ -599,7 +599,7 @@
       if (json && json.permissions) {
         if (!json.permissions.read) {
           this.$controls.remove();
-          messageCallout.error(__('js.listManager.accessDenied'));
+          messageCallout.error(__('Доступ запрещен!'));
         }
         if (!json.permissions.use) {
           this.$controls.find('.create').remove();
@@ -612,7 +612,7 @@
     },
 
     errorDataTable: function (event, settings, techNote, message) {
-      messageCallout.error(__('js.listManager.errData'));
+      messageCallout.error(__('Ошибка получения данных'));
       console.error(message);
       processAjaxError({status: 401});
     },
@@ -641,18 +641,18 @@
       for (var i = 0; i < selected.length; ++i) {
         var data = selected[i];
         if (data[self.options.master.backRef]) {
-          var msg = __('js.listManager.breakRef', {
+          var msg = __('<p>Выбранный объект по ссылке "%cap" связан с <a href="%href">другим объектом</a>.</p><p>Вы уверены, что хотите разорвать эту связь?</p>', {
             cap: self.options.master.backRefCaption,
             href: self.options.master.backRefUrlPattern.replace(':id', data[self.options.master.backRef])
           });
           if (data[self.options.master.backRef + '_ref']) {
-            msg = __('js.listManager.breakRefRef', {
+            msg = __('<p>Выбранный объект по ссылке "%cap" связан с <a href="%href">%name</a>.</p><p>Вы уверены, что хотите разорвать эту связь?</p>', {
               cap: self.options.master.backRefCaption,
               href: self.options.master.backRefUrlPattern.replace(':id', data[self.options.master.backRef]),
               name: data[self.options.master.backRef + '_ref'].__string
             });
           }
-          confirmations.push('<div title="' + __('js.listManager.warn') + '">' + msg + '</div>');
+          confirmations.push('<div title="' + __('Внимание!') + '">' + msg + '</div>');
         }
       }
       this.createSelectConfirmation(confirmations, selected);
@@ -670,14 +670,14 @@
         resizable: false,
         width: 400,
         buttons: {
-          [__('js.listManager.yes')]: function() {
+          [__('Да')]: function() {
             setTimeout(function () {
               this.createSelectConfirmation(confirmations, selected);
             }.bind(this, 1000));
             $dlg.dialog("close");
             $dlg.remove();
           }.bind(this),
-          [__('js.listManager.no')]: function() {
+          [__('Нет')]: function() {
             $dlg.dialog("close");
             $dlg.remove();
           }
@@ -719,7 +719,7 @@
           $.post(this.options.url.put, {class: result.__class, id: result._id})
             .done(this.reload.bind(this))
             .fail(function (xhr) {
-              messageCallout.error(xhr.responseText || __('js.listManager.itemErr'));
+              messageCallout.error(xhr.responseText || __('Ошибка при извлечении объектов'));
               console.error(xhr);
             })
             .fail(processAjaxError);
@@ -818,7 +818,7 @@
           _this.reload();
         })
         .fail(function (xhr) {
-          messageCallout.error(xhr.$message || __('js.listManager.sortErr'));
+          messageCallout.error(xhr.$message || __('Ошибка при сортировке объектов'));
           console.error(xhr);
         })
         .fail(processAjaxError);
@@ -893,7 +893,7 @@
     },
 
     remove: function (message, items) {
-      message = message === undefined ? __('js.listManager.confirmDelItemsCol') : message;
+      message = message === undefined ? __('Убрать выбранные объекты из коллекции?') : message;
       if (!message || confirm(message)) {
         if (this.options.url && this.options.url.remove) {
           var items = typeof toDelete !== 'undefined' ? toDelete : this.toDelete();
@@ -921,7 +921,7 @@
     },
 
     del: function (message, items) {
-      message = message === undefined ? __('js.listManager.confirmDelItems') : message;
+      message = message === undefined ? __('Удалить выбранные объекты?') : message;
       if (!message || confirm(message)) {
         if (this.options.url && this.options.url.do) {
           items = items || this.toDelete();
@@ -946,7 +946,7 @@
           this.reload();
         }.bind(this))
         .fail(function (xhr) {
-          messageCallout.error(xhr.$message || __('js.listManager.delErr'));
+          messageCallout.error(xhr.$message || __('Ошибка при сортировке объектов'));
           console.error(xhr);
         })
         .fail(processAjaxError);
@@ -1380,7 +1380,7 @@
         this.$group.removeClass('loading');
         this.initHiddenLinks();
       } catch (err) {
-        messageCallout.error(__('js.listManager.initColErr', {cap: this.prop.caption}));
+        messageCallout.error(__('Ошибка инициализации коллекции: %cap', {cap: this.prop.caption}));
         console.error(err);
         nextCallback && nextCallback();
       }

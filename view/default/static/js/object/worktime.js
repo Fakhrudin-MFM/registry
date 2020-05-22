@@ -208,30 +208,30 @@
         }
       });
       var error = null;
-      if (emptyDay || emptyTime) error = __('js.calendar.days.sunday');
+      if (emptyDay || emptyTime) error = __('Воскресенье');
       return error;
     }
   };
 
   var FULL_DAYS = [
     '',
-    __('js.calendar.days.monday'),
-    __('js.calendar.days.tuesday'),
-    __('js.calendar.days.wednesday'),
-    __('js.calendar.days.thursday'),
-    __('js.calendar.days.friday'),
-    __('js.calendar.days.saturday'),
-    __('js.calendar.days.sunday')
+    __('Понедельник'),
+    __('Вторник'),
+    __('Среда'),
+    __('Четверг'),
+    __('Пятница'),
+    __('Суббота'),
+    __('Воскресенье')
   ];
   var SHORT_DAYS = [
     '',
-    __('js.calendar.daysMin.monday'),
-    __('js.calendar.daysMin.tuesday'),
-    __('js.calendar.daysMin.wednesday'),
-    __('js.calendar.daysMin.thursday'),
-    __('js.calendar.daysMin.friday'),
-    __('js.calendar.daysMin.saturday'),
-    __('js.calendar.daysMin.sunday')
+    __('Пн'),
+    __('Вт'),
+    __('Ср'),
+    __('Чт'),
+    __('Пт'),
+    __('Сб'),
+    __('Вс')
   ];
 
   function formatItem (item) {
@@ -262,18 +262,18 @@
   }
 
   function formatBreak (time) {
-    return time ? __('js.worktime.break', {time: formatTime(time)}) : '';
+    return time ? __(' (перерыв %time)', {time: formatTime(time)}) : '';
   }
 
   function formatTime (time) {
-    return time instanceof Array ? __('js.worktime.formatTime', {h1: time[0], m1: time[1], h2: time[2], m2: time[3]}) : '';
+    return time instanceof Array ? __('' с %h1:%m1 до %h2:%m2', {h1: time[0], m1: time[1], h2: time[2], m2: time[3]}) : '';
   }
 
   // CONVERTER
 
   function convertToSchedule (items) {
     var dest = {
-      description: __('js.worktime.schedule'),
+      description: __('Недельное расписание'),
       item: '',
       occurs: [],
       skipped: []

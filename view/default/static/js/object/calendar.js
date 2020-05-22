@@ -9,34 +9,34 @@
 
 var CALENDAR_RU_LOCALE = {
   days: [
-    __('js.calendar.days.sunday'),
-    __('js.calendar.days.monday'),
-    __('js.calendar.days.tuesday'),
-    __('js.calendar.days.wednesday'),
-    __('js.calendar.days.thursday'),
-    __('js.calendar.days.friday'),
-    __('js.calendar.days.saturday')
+    __('Воскресенье'),
+    __('Понедельник'),
+    __('Вторник'),
+    __('Среда'),
+    __('Четверг'),
+    __('Пятница'),
+    __('Суббота')
   ],
   daysShort: [
-    __('js.calendar.daysShort.sunday'),
-    __('js.calendar.daysShort.monday'),
-    __('js.calendar.daysShort.tuesday'),
-    __('js.calendar.daysShort.wednesday'),
-    __('js.calendar.daysShort.thursday'),
-    __('js.calendar.daysShort.friday'),
-    __('js.calendar.daysShort.saturday')
+    __('Вск'),
+    __('Пнд'),
+    __('Втр'),
+    __('Срд'),
+    __('Чтв'),
+    __('Птн'),
+    __('Суб')
   ],
   daysMin: [
-    __('js.calendar.daysMin.sunday'),
-    __('js.calendar.daysMin.monday'),
-    __('js.calendar.daysMin.tuesday'),
-    __('js.calendar.daysMin.wednesday'),
-    __('js.calendar.daysMin.thursday'),
-    __('js.calendar.daysMin.friday'),
-    __('js.calendar.daysMin.saturday')
+    __('Вс'),
+    __('Пн'),
+    __('Вт'),
+    __('Ср'),
+    __('Чт'),
+    __('Пт'),
+    __('Сб')
   ],
   months: [
-    __("js.calendar.months.january"),
+    __(" мonths.january"),
     __("js.calendar.months.february"),
     __("js.calendar.months.march"),
     __("js.calendar.months.april"),
@@ -99,19 +99,19 @@ var lang = 'ru';
         enableRangeSelection: true,
         contextMenuItems: [
           {
-            text: __('js.calendar.editEvent'),
+            text: __('Редактировать'),
             click: function(e) {
               _this.editEvent(e);
             }
           },
           {
-            text: __('js.calendar.deleteEvent'),
+            text: __('Удалить событие'),
             click: function(e) {
               _this.deleteEvent(e.eventId, e.eventType, e.scheduleId);
             }
           },
           {
-            text: __('js.calendar.deleteSchedule'),
+            text: __('Удалить расписание'),
             click: function(e) {
               _this.deleteSchedule(e.scheduleId);
             }
@@ -238,10 +238,10 @@ var lang = 'ru';
       return '<div class="event-item">' + scheduleRuleToString(event, event._type === 'skipped')
         + '<button class="edit-event btn btn-default"><span class="glyphicon glyphicon-pencil"'
         + 'data-id="' + event._id + '" data-type="' + event._type + '"'
-        + 'title="' + __('js.calendar.editEvent') + '"></span></button>'
+        + 'title="' + __('Редактировать') + '"></span></button>'
         + '<button class="del-event btn btn-default"><span class="glyphicon glyphicon-trash"'
         + 'data-id="' + event._id + '" data-type="' + event._type + '"'
-        + 'title="' + __('js.calendar.deleteEvent') + '"></span></button>'
+        + 'title="' + __('Удалить событие') + '"></span></button>'
         + '</div>';
     },
 
@@ -386,7 +386,7 @@ var lang = 'ru';
     saveEvent: function() {
       var i, type = this.eventFrame.find('select[name="event-type"]').val();
       if (!checkScheduleRule(this._event)) {
-        alert(__('js.calendar.wrongSettings'));
+        alert(__('Неверные настройки события'));
         return;
       }
       if (this._event && this._schedule) {
@@ -536,21 +536,21 @@ var lang = 'ru';
     var every = '';
     var freq = '';
     if (year % 10 === 1 && year !== 11) {
-      every = __('js.calendar.eachone');
-      freq =  __('js.calendar.year');
+      every = __('Каждый');
+      freq =  __(' год');
     } else if ((year % 10 === 2 || year % 10 === 3) && year !== 12 && year !== 13) {
-      every = __('js.calendar.each');
-      freq =  year + __('js.calendar.years1');
+      every = __('Каждые');
+      freq =  year + __(' года');
     } else {
-      every = __('js.calendar.each');
-      freq = year + __('js.calendar.years2');
+      every = __('Каждые');
+      freq = year + __(' лет');
     }
 
-    return __('js.calendar.someYears', {
-      s: skipped ? __('js.calendar.skipped', {s: every.toLowerCase()}) : every,
+    return __('%s %f, %m1 %w, в %m2', {
+      s: skipped ? __('Исключая %s', {s: every.toLowerCase()}) : every,
       f: freq,
       m1: moment({month: month, minute: day}).locale(lang).format('DD MMMM'),
-      w: weekday ? __('js.calendar.weekday', {d: CALENDAR_RU_LOCALE.days[weekday % 7]}) : '',
+      w: weekday ? __(', если это %d', {d: CALENDAR_RU_LOCALE.days[weekday % 7]}) : '',
       m2: moment({hour: hour, minute: minute, second: second}).format('HH:mm:SS')
     });
   }
@@ -560,11 +560,11 @@ var lang = 'ru';
     hour = hour || 0;
     minute = minute || 0;
     second = second || 0;
-    return __('js.calendar.everyYear', {
-      s: skipped ? __('js.calendar.skipeachone') : __('js.common.calendar.eachone'),
+    return __('%s %m1, %d-ого числа%w, в %m2', {
+      s: skipped ? __('Исключая каждый') : __('js.common.calendar.eachone'),
       m1: CALENDAR_RU_LOCALE.months[month - 1],
       d: day,
-      w: weekday ? __('js.calendar.weekday', {d: CALENDAR_RU_LOCALE.days[weekday % 7]}) : '',
+      w: weekday ? __(', если это %d', {d: CALENDAR_RU_LOCALE.days[weekday % 7]}) : '',
       m2: moment({hour: hour, minute: minute, second: second}).format('HH:mm:SS')
     });
   }
@@ -573,10 +573,10 @@ var lang = 'ru';
     hour = hour || 0;
     minute = minute || 0;
     second = second || 0;
-    return __('js.calendar.everyMonth', {
-      s: skipped ? __('js.calendar.skipeachn') : __('js.common.calendar.eachn'),
+    return __('%s %d число %w, в %m', {
+      s: skipped ? __(''Исключая каждое'') : __('js.common.calendar.eachn'),
       d: day,
-      w: weekday ? __('js.calendar.weekday', {d: CALENDAR_RU_LOCALE.days[weekday % 7]}) : '',
+      w: weekday ? __(', если это %d', {d: CALENDAR_RU_LOCALE.days[weekday % 7]}) : '',
       m: moment({hour: hour, minute: minute, second: second}).format('HH:mm:SS')
     });
   }
@@ -591,8 +591,8 @@ var lang = 'ru';
     } else if (weekday === 3 || weekday === 5 || weekday === 6) {
       prefix = 'Каждую';
     }
-    return __('js.calendar.everyWeek', {
-      s: skipped ? __('js.calendar.skipped', {s:prefix.toLowerCase()}) : prefix,
+    return __('%s %d, в %m', {
+      s: skipped ? __('Исключая %s', {s:prefix.toLowerCase()}) : prefix,
       d: CALENDAR_RU_LOCALE.days[weekday % 7],
       m: moment({hour: hour, minute: minute, second: second}).format('HH:mm:SS')
     });
@@ -601,24 +601,24 @@ var lang = 'ru';
   function everyDayString (hour, minute, second, skipped) {
     minute = minute || 0;
     second = second || 0;
-    return __('js.calendar.everyDay', {
-      s: skipped ? __('js.calendar.skipeachone') : __('js.common.calendar.eachone'),
+    return __('%s день, в %m', {
+      s: skipped ? __('Исключая каждый') : __('js.common.calendar.eachone'),
       m: moment({hour: hour, minute: minute, second: second}).format('HH:mm:SS')
     });
   }
 
   function everyHourString (minute, second, skipped) {
     second = second || 0;
-    return __('js.calendar.everyHour', {
-      s: skipped ? __('js.calendar.skipeachone') : __('js.common.calendar.eachone'),
+    return __('%s час, на %min-ой минуте, %sec-ой секунде', {
+      s: skipped ? __('Исключая каждый') : __('js.common.calendar.eachone'),
       min: minute,
       sec: second
     });
   }
 
   function everyMinuteString (second, skipped) {
-    return __('js.calendar.everyMinute', {
-      s: skipped ? __('js.calendar.skipeachm') : __('js.common.calendar.eachm'),
+    return __('%s минуту, на %sec-ой секунде', {
+      s: skipped ? __(''Исключая каждую'') : __('js.common.calendar.eachm'),
       sec: second
     });
   }
@@ -627,10 +627,10 @@ var lang = 'ru';
     var hours = Math.round(duration / 3600);
     var minutes = Math.round(duration / 60) % 60;
     var seconds = duration % 60;
-    return __('js.calendar.during')
-      + (hours ? ' ' + hours + __('js.calendar.h') : '')
+    return __('в течении')
+      + (hours ? ' ' + hours + __(' ч') : '')
       + (minutes ? ' ' + minutes + __('js.calendar.m') : '')
-      + (seconds ? ' ' + seconds + __('js.calendar.s') : '');
+      + (seconds ? ' ' + seconds + __(' с') : '');
   }
 
   function getDetails(date, events) {

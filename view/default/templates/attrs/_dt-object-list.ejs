@@ -125,10 +125,10 @@
         <button type="button" class="reload btn btn-default" title="Обновить"><span class="fa fa-refresh"></span></button>
         <%if (options.dt.reorderable) {%>
         <%if (attrPermissions && attrPermissions.write && !(field.readonly || globalReadonly)) {%>
-        <button type="button" class="sorting-up sorting btn btn-default" title="<%=__('templates.default.attrs.up')%>" style="display: none;">
+        <button type="button" class="sorting-up sorting btn btn-default" title="<%=__('Вверх')%>" style="display: none;">
           <span class="fa fa-arrow-up"></span>
         </button>
-        <button type="button" class="sorting-down sorting btn btn-default" title="<%=__('templates.default.attrs.down')%>" style="display: none;">
+        <button type="button" class="sorting-down sorting btn btn-default" title="<%=__('Вниз')%>" style="display: none;">
           <span class="fa fa-arrow-down"></span>
         </button>
         <%}%>
@@ -145,17 +145,17 @@
       <p class="error-block"></p>
       <div class="form-group-loader"><span class="fa fa-refresh fa-spin"></span></div>
 
-      <div class="inline-form-control update" title="<%=__('templates.default.attrs.update')%>" style="display: none;">
+      <div class="inline-form-control update" title="<%=__('Редактировать')%>" style="display: none;">
         <span class="glyphicon glyphicon-edit"></span>
       </div>
-      <div class="inline-form-control save" title="<%=__('templates.default.attrs.save')%>" style="display: none;">
+      <div class="inline-form-control save" title="<%=__('Сохранить')%>" style="display: none;">
         <span class="glyphicon glyphicon-save"></span>
       </div>
-      <div class="inline-form-control cancel" title="<%=__('templates.default.attrs.cancel')%>" style="display: none;">
+      <div class="inline-form-control cancel" title="<%=__('Отменить')%>" style="display: none;">
         <span class="glyphicon glyphicon-remove"></span>
       </div>
 
-      <div class="inline-form-control remove" title="<%=__('templates.default.attrs.remove')%>" style="display: none;">
+      <div class="inline-form-control remove" title="<%=__('Убрать')%>" style="display: none;">
         <span class="glyphicon glyphicon-remove"></span>
       </div>
       <!--<div class="inline-form-control delete" title="Удалить" style="display: none;">
@@ -164,10 +164,10 @@
       <div class="inline-form-control workflow" style="display: none;">
       </div>
       <%if (options.dt.reorderable) {%>
-        <div class="inline-form-control sorting-up sorting" title="<%=__('templates.default.attrs.up')%>">
+        <div class="inline-form-control sorting-up sorting" title="<%=__('Вверх')%>">
           <span class="fa fa-arrow-up"></span>
         </div>
-        <div class="inline-form-control sorting-down sorting" title="<%=__('templates.default.attrs.down')%>">
+        <div class="inline-form-control sorting-down sorting" title="<%=__('Вниз')%>">
           <span class="fa fa-arrow-down"></span>
         </div>
       <% } %>

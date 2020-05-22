@@ -156,7 +156,7 @@
         this.modalMark = new ymaps.Placemark(coords);
         this.modalMap.geoObjects.add(this.modalMark);
       }
-      this.modalMark.properties.set('balloonContentHeader', __('js.geocoord.contentHeader'));
+      this.modalMark.properties.set('balloonContentHeader', __('Координаты&nbsp&nbsp'));
       //this.modalMark.properties.set('balloonContentBody', this.coords[0].toPrecision(6) +'<br>'+ this.coords[1].toPrecision(6));
     },
 
@@ -164,10 +164,10 @@
       this.newCoords = coords;
       this.modalMap.balloon.isOpen() && this.modalMap.balloon.close();
       this.modalMap.balloon.open(coords, {
-        contentHeader: __('js.geocoord.contentHeader'),
+        contentHeader: __('Координаты&nbsp&nbsp'),
         contentBody: '<div class="mt10">' + coords[0].toPrecision(8) + '</div>'
         + '<div class="mb10">' + coords[1].toPrecision(8) + '</div>'
-        + '<button class="set-coords-btn btn btn-primary btn-sm" type="button">' + __('js.geocoord.set') + '</button>'
+        + '<button class="set-coords-btn btn btn-primary btn-sm" type="button">' + __('Задать') + '</button>'
       }).then(function () {
         //this.modalMap.getZoom() > MAX_INIT_ZOOM && this.modalMap.setZoom(MAX_INIT_ZOOM);
       }.bind(this));
@@ -251,7 +251,7 @@
       });
       return true;
     } catch (err) {
-      console.log(__('js.geocoord.invalidcoord'));
+      console.log(__('Ymap: Invalid geo coords'));
       return false;
     }
   }
@@ -352,7 +352,7 @@
           cb(data.status != 'ok');
         }.bind(this));
       } else {
-        console.log(__('js.geocoord.warning'));
+        console.log(__('Warning: Host protocol is secure. Geojson validation is not perfomed'));
         cb();
       }
     },

@@ -21,11 +21,11 @@
       <div class="list-tools">
         <button type="button" class="create-btn btn btn-primary">
           <span class="glyphicon glyphicon-map-marker"></span>
-          <%=__('templates.default.attrs.geocoord.create')%>
+          <%=__('Задать координаты')%>
         </button>
         <button type="button" class="update-btn btn btn-info">
           <span class="glyphicon glyphicon-map-marker"></span>
-          <%=__('templates.default.attrs.geocoord.edit')%>
+          <%=__('Изменить координаты')%>
         </button>
       </div>
       <% } %>
@@ -36,19 +36,19 @@
             <div class="modal-header">
               <button type="button" class="close"><span aria-hidden="true">&times;</span></button>
               <h4 class="modal-title">
-                <%=__('templates.default.attrs.geocoord.title')%>
+                <%=__('Задать координаты')%>
               </h4>
             </div>
             <div class="modal-body">
               <div>
                 <button type="button" class="save-btn btn btn-success">
-                  <%=__('templates.default.attrs.geocoord.success')%>
+                  <%=__('Сохранить')%>
                 </button>
               </div>
               <div class="form-group mt10 mb10 search-group">
                 <div class="overlay"><span class="fa fa-refresh fa-spin"></span></div>
                 <div class="input-group">
-                  <input type="text" class="form-control search-address" placeholder="<%=__('templates.default.attrs.geocoord.search')%>">
+                  <input type="text" class="form-control search-address" placeholder="<%=__('Введите адрес...')%>">
                   <span class="input-group-btn">
                     <button type="button" class="search-btn btn btn-primary">
                       <span class="glyphicon glyphicon-search"></span>
@@ -56,20 +56,20 @@
                   </span>
                 </div>
                 <p class="error-block">
-                  <%=__('templates.default.attrs.geocoord.noCoordError')%>
+                  <%=__('Координаты не найдены')%>
                 </p>
               </div>
               <div class="geocoord-modal-map"></div>
               <div class="geojson">
                 <div class="overlay"><i class="fa fa-refresh fa-spin"></i></div>
                 <div class="mt10 mb10">
-                  <textarea class="form-control" rows="4" placeholder="<%=__('templates.default.attrs.geocoord.data')%>"></textarea>
+                  <textarea class="form-control" rows="4" placeholder="<%=__('Введите данные в GEO-JSON формате')%>"></textarea>
                 </div>
                 <button type="button" class="btn btn-default verify-json">
-                  <%=__('templates.default.attrs.geocoord.verify')%>
+                  <%=__('Проверить и отобразить GEO-JSON')%>
                 </button>
                 <span class="invalid-json text-danger ml10">
-                  <%=__('templates.default.attrs.geocoord.dataError')%>
+                  <%=__('Данные содержат ошибку...')%>
                 </span>
               </div>
             </div>

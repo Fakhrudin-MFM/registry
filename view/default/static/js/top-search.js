@@ -108,10 +108,10 @@ $(function () {
     var nodeItems = findNodes(value);
     var menu = [
       createSearchMenu(searchItems, MAX_MENU_ITEMS),
-      createObjectMenu(objectItems, MAX_MENU_ITEMS, __('js.topSearch.recentObjects')),
+      createObjectMenu(objectItems, MAX_MENU_ITEMS, __('Недавние объекты')),
       createNodeMenu(nodeItems, MAX_MENU_ITEMS, hasValue
-        ? __('js.topSearch.foundMenuNodes')
-        : __('js.topSearch.recentMenuNodes'))
+        ? __('Найденные пункты меню')
+        : __('Недавние пункты меню'))
     ];
     menu = menu.filter(function (data) {
       return data;

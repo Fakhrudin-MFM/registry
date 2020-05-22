@@ -97,17 +97,17 @@
 <div id="cert-dlg" class="cert-dlg" style="display:none;">
   <div class="form-group">
     <label class="control-label bold mb10">
-      <%=__('templates.default.view.item.crypto.choose')%>:
+      <%=__('Выберите сертификат для подписи')%>:
     </label>
     <select class="no-select2 form-control" name="cert"></select>
   </div>
   <div class="text-right">
-    <a href="#" id="cert_info_view" style="display:none"><%=__('templates.default.view.item.crypto.info')%></a>&nbsp;
+    <a href="#" id="cert_info_view" style="display:none"><%=__('Просмотреть информацию о сертификате')%></a>&nbsp;
     <button id="cert_select_cancel" class="btn btn-primary">
-      <%=__('templates.default.view.item.crypto.cancel')%>
+      <%=__('Отменить')%>
     </button>
     <button id="cert_select_confirm" class="btn btn-primary">
-      <%=__('templates.default.view.item.crypto.select')%>
+      <%=__('Выбрать')%>
     </button>
   </div>
 </div>
@@ -115,7 +115,7 @@
   <div class="panel-body">
     <div class="form-group">
       <label class="col-md-3 col-sm-3 control-label" for="cert_subject">
-        <%=__('templates.default.view.item.crypto.subject')%>
+        <%=__('Субьект')%>
       </label>
       <div class="col-md-9 col-sm-9">
         <input id="cert_subject" type="text" class="form-control attr-value" readonly="true" value="">
@@ -123,7 +123,7 @@
     </div>
     <div class="form-group">
       <label class="col-md-3 col-sm-3 control-label" for="cert_provider">
-        <%=__('templates.default.view.item.crypto.provider')%>
+        <%=__('Постащик')%>
       </label>
       <div class="col-md-9 col-sm-9">
         <input id="cert_provider" type="text" class="form-control attr-value" readonly="true" value="">
@@ -131,7 +131,7 @@
     </div>
     <div class="form-group">
       <label class="col-md-3 col-sm-3 control-label" for="cert_valid_since">
-        <%=__('templates.default.view.item.crypto.validSince')%>
+        <%=__('Действителен с')%>
       </label>
       <div class="col-md-6 col-sm-6">
         <input id="cert_valid_since" type="text" class="form-control attr-value" readonly="true" value="">
@@ -139,7 +139,7 @@
     </div>
     <div class="form-group">
       <label class="col-md-3 col-sm-3 control-label" for="cert_valid_till">
-        <%=__('templates.default.view.item.crypto.validTill')%>
+        <%=__('Действителен по')%>
       </label>
       <div class="col-md-6 col-sm-6">
         <input id="cert_valid_till" type="text" class="form-control attr-value" readonly="true" value="">
@@ -147,7 +147,7 @@
     </div>
     <div class="form-group">
       <label class="col-md-3 col-sm-3 control-label" for="cert_serial">
-        <%=__('templates.default.view.item.crypto.serial')%>
+        <%=__('Серийный номер')%>
       </label>
       <div class="col-md-7 col-sm-7">
         <input id="cert_serial" type="text" class="form-control attr-value" readonly="true" value="">
@@ -156,7 +156,7 @@
   </div>
   <div class="text-right">
     <button class="btn btn-primary">
-      <%=__('templates.default.view.item.crypto.close')%>
+      <%=__('Закрыть')%>
     </button>
   </div>
 </div>
@@ -178,7 +178,7 @@
   <div class="panel-heading">
     <div class="workflow panel-workflow"></div>
     <%if (!item.getItemId() && typeof createByCopy !== "undefined" && createByCopy) {%>
-      <div class="float-right"><input type="checkbox" id="create-another"/> <%=__('templates.default.view.item.createAnother')%></div>
+      <div class="float-right"><input type="checkbox" id="create-another"/> <%=__('Cоздать еще')%></div>
     <%}%>
     <% if (!globalReadonly) { %>
     <% for (var cmd of form.commands) { %>
@@ -193,13 +193,13 @@
       </button>
     <% }} %>
     <button id="<%=`${form.ids.formBtn}close`%>" type="button" class="closer btn btn-default object-control" data-id="CLOSE">
-      <%=__('templates.default.view.item.close')%>
+      <%=__('Закрыть')%>
     </button>
-    <button id="<%=`${form.ids.formBtn}reload`%>" type="button" class="reload btn btn-default object-control" data-id="RELOAD" title="<%=__('templates.default.view.item.reload')%>">
+    <button id="<%=`${form.ids.formBtn}reload`%>" type="button" class="reload btn btn-default object-control" data-id="RELOAD" title="<%=__('Обновить')%>">
       <span class="fa fa-refresh"></span>
     </button>
     <% if (options.id && item.getMetaClass().isJournaling()) { %>
-      <button id="<%=`${form.ids.formBtn}history`%>" type="button" class="history btn btn-default object-control" data-id="HISTORY" title="<%=__('templates.default.view.item.history')%>">
+      <button id="<%=`${form.ids.formBtn}history`%>" type="button" class="history btn btn-default object-control" data-id="HISTORY" title="<%=__('Журнал изменений')%>">
         <span class="fa fa-history"></span>
       </button>
     <% } %>
@@ -214,14 +214,14 @@
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
               <h4 class="modal-title">
-                <%=__('templates.default.view.item.signStatus')%>
+                <%=__('Статус ЭП')%>
               </h4>
             </div>
             <div class="modal-body">
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">
-                <%=__('templates.default.view.item.close')%>
+                <%=__('Закрыть')%>
               </button>
             </div>
           </div>
@@ -250,10 +250,10 @@ if (item.getItemId() && !item.permissions.write) {
         <span class="glyphicon glyphicon-trash"></span>
       </button>
     <% } %>
-    <button id="<%=`f${form.ids.formBtn}close`%>" type="button" class="btn btn-default CLOSE" title="<%=__('templates.default.view.item.close')%>" data-cmd="CLOSE">
+    <button id="<%=`f${form.ids.formBtn}close`%>" type="button" class="btn btn-default CLOSE" title="<%=__('Закрыть')%>" data-cmd="CLOSE">
       <span class="glyphicon glyphicon-remove"></span>
     </button>
-    <button id="<%=`f${form.ids.formBtn}reload`%>" type="button" class="btn btn-default" title="<%=__('templates.default.view.item.reload')%>" data-cmd="RELOAD">
+    <button id="<%=`f${form.ids.formBtn}reload`%>" type="button" class="btn btn-default" title="<%=__('Обновить')%>" data-cmd="RELOAD">
       <span class="fa fa-refresh"></span>
     </button>
   </div>
@@ -292,7 +292,7 @@ if (item.getItemId() && !item.permissions.write) {
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title">
-          <%=__('templates.default.view.item.confirm')%>
+          <%=__('Подтвердите ваши действия')%>
         </h4>
       </div>
       <div class="modal-body">
@@ -300,10 +300,10 @@ if (item.getItemId() && !item.permissions.write) {
       </div>
       <div class="modal-footer">
         <button type="button" class="confirm btn btn-success">
-          <%=__('templates.default.view.item.continue')%>
+          <%=__('Продолжить')%>
         </button>
         <button type="button" class="cancel btn btn-default" data-dismiss="modal">
-          <%=__('templates.default.view.item.cancel')%>
+          <%=__('Отменить')%>
         </button>
       </div>
     </div>
